@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36511.14 d17.14
+VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceSync.API", "SliceSync.API\SliceSync.API.csproj", "{54577BB3-44B7-4F91-8D3E-0906497C5056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceSync.Infrastructure", "SliceSync.Infrastructure\SliceSync.Infrastructure.csproj", "{08BC2E0D-9584-40D3-8305-51AA0107B67C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceSync.Core", "SliceSync.Core\SliceSync.Core.csproj", "{8B69381E-ABA5-485B-82D3-93E636813F97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{54577BB3-44B7-4F91-8D3E-0906497C5056}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54577BB3-44B7-4F91-8D3E-0906497C5056}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54577BB3-44B7-4F91-8D3E-0906497C5056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08BC2E0D-9584-40D3-8305-51AA0107B67C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08BC2E0D-9584-40D3-8305-51AA0107B67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08BC2E0D-9584-40D3-8305-51AA0107B67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08BC2E0D-9584-40D3-8305-51AA0107B67C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B69381E-ABA5-485B-82D3-93E636813F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B69381E-ABA5-485B-82D3-93E636813F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B69381E-ABA5-485B-82D3-93E636813F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B69381E-ABA5-485B-82D3-93E636813F97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
