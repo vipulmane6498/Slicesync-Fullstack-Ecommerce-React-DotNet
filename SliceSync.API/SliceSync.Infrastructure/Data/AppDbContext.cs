@@ -12,7 +12,6 @@ namespace SliceSync.Infrastructure.Data
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
-
         public AppDbContext(DbContextOptions options) : base(options)
         {
 
