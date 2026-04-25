@@ -44,10 +44,12 @@ if (app.Environment.IsDevelopment())
 app.UseHsts();
 app.UseHttpsRedirection();
 
-//auth for login
-//app.UseAuthentication();
-
 app.UseRouting();
+
+//auth for login
+app.UseAuthentication();
+//app.UseAuthorization();
+
 //Controller
 app.MapControllers();
 
