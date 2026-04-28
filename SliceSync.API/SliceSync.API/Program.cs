@@ -48,7 +48,7 @@ app.UseRouting();
 
 //auth for login
 app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //Controller
 app.MapControllers();

@@ -183,32 +183,32 @@ namespace SliceSync.API.Controllers
 
 
 
-        //[HttpPost("logout")]
-        //[Authorize]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    //find user name
-        //   var userName= User.Identity?.Name;
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            //find user name
+            var userName = User.Identity?.Name;
 
 
-        //    //Check is user is authenticated
-        //    if (User.Identity != null && User.Identity.IsAuthenticated)
-        //    {
+            //Check is user is authenticated
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
 
-                
-        //        await _signInManager.SignOutAsync();
-        //        return Ok(new
-        //        {
-        //            sucess = true,
-        //            message = $"{userName} Logout successful!!"
-        //        });
-        //    }
-        //    else
-        //    {
-        //        return BadRequest("User is not logged In !");
-        //    }
 
-        //}
+                await _signInManager.SignOutAsync();
+                return Ok(new
+                {
+                    sucess = true,
+                    message = $"{userName} Logout successful!!"
+                });
+            }
+            else
+            {
+                return BadRequest("User is not logged In !");
+            }
+
+        }
     }
 
 }
