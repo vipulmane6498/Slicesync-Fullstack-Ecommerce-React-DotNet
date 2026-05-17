@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SliceSync.API.Middlewares;
 using SliceSync.Core.IdentityEntities;
 using SliceSync.Infrastructure.Data;
 
@@ -36,19 +37,25 @@ if (app.Environment.IsDevelopment())
     //Swagger
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseGlobalExceptionHandlingMiddleware();
+    //app.UseDeveloperExceptionPage();
+}
+else
+{
 }
 
 
+//app.UseSerilogRequestLogging();
 
-// Configure the HTTP request pipeline.
-app.UseHsts();
+    // Configure the HTTP request pipeline.
+    app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseRouting();
 
 //auth for login
 app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthorization(); 
 
 //Controller
 app.MapControllers();

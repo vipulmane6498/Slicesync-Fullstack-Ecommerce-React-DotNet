@@ -194,8 +194,6 @@ namespace SliceSync.API.Controllers
             //Check is user is authenticated
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-
-
                 await _signInManager.SignOutAsync();
                 return Ok(new
                 {
