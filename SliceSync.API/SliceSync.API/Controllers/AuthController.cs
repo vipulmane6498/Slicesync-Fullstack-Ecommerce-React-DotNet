@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SliceSync.Core.DTOs;
 using SliceSync.Core.Enums;
 using SliceSync.Core.IdentityEntities;
+using SliceSync.Core.ServiceContracts;
 
 namespace SliceSync.API.Controllers
 {
@@ -16,13 +17,15 @@ namespace SliceSync.API.Controllers
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IJwtService _jwtService;
 
 
-        public AuthController(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public AuthController(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, SignInManager<ApplicationUser> signInManager, IJwtService jwtService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _jwtService = jwtService;
         }
 
 
@@ -100,6 +103,7 @@ namespace SliceSync.API.Controllers
                     }
                     //5. Assign Admin role to user
                     await _userManager.AddToRoleAsync(user, UserTypeOptions.Admin.ToString());
+
                 }
 
                 //C. DeliveryGuy Role
@@ -128,7 +132,13 @@ namespace SliceSync.API.Controllers
                 {
                     return BadRequest("provided role does not exist in the system. Select Role from: Customer, Admin and DeliveryGuy !");
                 }
-                return Ok($"{registerDTO.FullName} you are sucessfully registered !");
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+
+                //call JWT method and store the token with user details in variable and return to client
+                var authenticationResponse =  _jwtService.CreateJwtToken(user);
+                return Ok(authenticationResponse);
             }
             else
             {
@@ -159,25 +169,37 @@ namespace SliceSync.API.Controllers
                 //check if user is present in DB
                 ApplicationUser user = await _userManager.FindByEmailAsync(loginDTO.Email);
 
-                if (user != null)
-                {
-                    //Check if the user is with specific role if yes return OK
-                    //IsInRoleAsync -> verifies the give user is with the specified role in DB
-                    if (await _userManager.IsInRoleAsync(user, UserTypeOptions.Admin.ToString())) //check if the signedIn user is in Admin role
-                    {
-                        return Ok($"{loginDTO.Email} sucessfully loggedIn as a Admin role !!");
-                    }
-                    else if (await _userManager.IsInRoleAsync(user, UserTypeOptions.Customer.ToString()))//check if the signedIn user is in Customer role
-                    {
-                        return Ok($"{loginDTO.Email} sucessfully loggedIn as a Customer role !!");
-                    }
-                    else if (await _userManager.IsInRoleAsync(user, UserTypeOptions.DeliveryGuy.ToString())) //check if the signedIn user is in Delivery role
-                    {
-                        return Ok($"{loginDTO.Email} sucessfully loggedIn as a DeliveryGuy role !!");
-                    }
-                 }
+                if (user == null) {
+                    Problem("Please add creds !!");
+                }
+
+                //if (user != null)
+                //{
+                ////Check if the user is with specific role if yes return OK
+                ////IsInRoleAsync -> verifies the give user is with the specified role in DB
+                //if (await _userManager.IsInRoleAsync(user, UserTypeOptions.Admin.ToString())) //check if the signedIn user is in Admin role
+                //{
+                //    return Ok($"{loginDTO.Email} sucessfully loggedIn as a Admin role !!");
+                //}
+                //else if (await _userManager.IsInRoleAsync(user, UserTypeOptions.Customer.ToString()))//check if the signedIn user is in Customer role
+                //{
+                //    return Ok($"{loginDTO.Email} sucessfully loggedIn as a Customer role !!");
+                //}
+                //else if (await _userManager.IsInRoleAsync(user, UserTypeOptions.DeliveryGuy.ToString())) //check if the signedIn user is in Delivery role
+                //{
+                //    return Ok($"{loginDTO.Email} sucessfully loggedIn as a DeliveryGuy role !!");
+                //}
+                // }
+
+
+                //call JWT method and store the token with user details in variable and return to client
+                var authenticationResponse =  _jwtService.CreateJwtToken(user);
+                return Ok(authenticationResponse);
             }
-            return BadRequest("Enter the valid Credentials!!");
+            else
+            {
+                return Problem("Enter the valid Credentials!!");
+            }
 
         }
 

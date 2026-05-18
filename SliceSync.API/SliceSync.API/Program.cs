@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SliceSync.API.Middlewares;
 using SliceSync.Core.IdentityEntities;
+using SliceSync.Core.ServiceContracts;
 using SliceSync.Infrastructure.Data;
+using SliceSync.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 
 //Controller
 builder.Services.AddControllers();
+builder.Services.AddTransient<IJwtService, JwtService>();
 
 var app = builder.Build();
 
@@ -48,7 +51,7 @@ else
 //app.UseSerilogRequestLogging();
 
     // Configure the HTTP request pipeline.
-    app.UseHsts();
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseRouting();

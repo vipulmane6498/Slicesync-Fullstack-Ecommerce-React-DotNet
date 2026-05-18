@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SliceSync.Core\SliceSync.Core.csproj" />
     <ProjectReference Include="..\SliceSync.Infrastructure\SliceSync.Infrastructure.csproj" />
+    <ProjectReference Include="..\SliceSync.Service\SliceSync.Service.csproj" />
   </ItemGroup>
 
 </Project>
