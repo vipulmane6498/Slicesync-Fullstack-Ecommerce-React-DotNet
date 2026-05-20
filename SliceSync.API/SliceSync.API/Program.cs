@@ -18,7 +18,10 @@ builder.Services.AddSwaggerGen();
 
 //Configure DbContext class with DB ConnectionString.
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 
 //Configured Identity

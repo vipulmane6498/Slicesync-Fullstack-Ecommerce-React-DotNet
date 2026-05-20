@@ -138,6 +138,17 @@ namespace SliceSync.API.Controllers
 
                 //call JWT method and store the token with user details in variable and return to client
                 var authenticationResponse =  _jwtService.CreateJwtToken(user);
+
+                // Store the newly generated refresh token on the user record
+                user.JwtRefreshToken = authenticationResponse.JwtRefreshToken;
+
+                // Store the expiration time so we can validate it on future refresh requests
+                user.JwtRefreshTokenExpirationDateTime = authenticationResponse.JwtRefreshTokenExpirationDateTime;
+
+                // Persist the updated refresh token and expiration to the database
+                await _userManager.UpdateAsync(user);
+
+                // Return 200 OK with the full authentication response (JWT + refresh token) to the client
                 return Ok(authenticationResponse);
             }
             else
@@ -194,6 +205,17 @@ namespace SliceSync.API.Controllers
 
                 //call JWT method and store the token with user details in variable and return to client
                 var authenticationResponse =  _jwtService.CreateJwtToken(user);
+
+                // Store the newly generated refresh token on the user record table
+                user.JwtRefreshToken = authenticationResponse.JwtRefreshToken;
+
+                // Store the expiration time in user table so we can validate it on future refresh requests
+                user.JwtRefreshTokenExpirationDateTime = authenticationResponse.JwtRefreshTokenExpirationDateTime;
+
+                // Persist the updated refresh token and expiration to the database
+                await _userManager.UpdateAsync(user);
+
+                // Return 200 OK with the full authentication response (JWT + refresh token) to the client
                 return Ok(authenticationResponse);
             }
             else

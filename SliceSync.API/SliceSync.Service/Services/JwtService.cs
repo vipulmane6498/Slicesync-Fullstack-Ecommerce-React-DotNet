@@ -6,6 +6,7 @@ using SliceSync.Core.ServiceContracts;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SliceSync.Service.Services
@@ -134,8 +135,33 @@ namespace SliceSync.Service.Services
                 JwtToken = token,
                 Email = applicationUser.Email,
                 PersonName = applicationUser.FullName,
-                JwtTokenExpiration = expiration
+                JwtTokenExpiration = expiration,
+                JwtRefreshToken = GenerateJwtRefreshToken(),
+                JwtRefreshTokenExpirationDateTime = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["RefreshToken:EXPIRATION_MINUTES"]))
             };
+        }
+
+
+        /// <summary>
+        /// Generates a cryptographically secure random refresh token.
+        /// </summary>
+        /// <returns>A Base64-encoded 64-byte random string to be used as a refresh token.</returns>
+        private string GenerateJwtRefreshToken()
+        {
+            // Allocate a 64-byte buffer to hold the random bytes
+            // (64 bytes = 512 bits of entropy, making brute-force attacks infeasible)
+            byte[] bytes = new byte[64];
+
+            // Create a cryptographically strong random number generator
+            // (uses OS-level entropy source, unlike System.Random which is predictable)
+            var randomNumberGenerator = RandomNumberGenerator.Create();
+
+            // Fill the buffer with cryptographically secure random bytes
+            randomNumberGenerator.GetBytes(bytes);
+
+            // Convert the random bytes to a Base64 string for safe storage/transmission
+            // Result is an 88-character URL-safe string
+            return Convert.ToBase64String(bytes);
         }
     }
 }

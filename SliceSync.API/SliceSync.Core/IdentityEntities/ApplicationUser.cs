@@ -14,5 +14,9 @@ namespace SliceSync.Core.IdentityEntities
 
 
         public bool? IsActive { get; set; }
+
+        public string? JwtRefreshToken { get; set; }
+
+        public DateTime? JwtRefreshTokenExpirationDateTime { get; set; }
     }
 }

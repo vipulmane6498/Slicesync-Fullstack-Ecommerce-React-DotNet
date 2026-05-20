@@ -15,5 +15,9 @@ namespace SliceSync.Core.DTOs
         public string? JwtToken { get; set; } = string.Empty;
 
         public DateTime? JwtTokenExpiration { get; set; }
+
+        public string? JwtRefreshToken { get; set;} = string.Empty;
+
+        public DateTime? JwtRefreshTokenExpirationDateTime { get; set; }
     }
 }
