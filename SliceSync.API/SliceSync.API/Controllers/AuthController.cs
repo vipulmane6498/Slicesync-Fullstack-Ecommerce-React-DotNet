@@ -7,11 +7,13 @@ using SliceSync.Core.DTOs;
 using SliceSync.Core.Enums;
 using SliceSync.Core.IdentityEntities;
 using SliceSync.Core.ServiceContracts;
+using System.Security.Claims;
 
 namespace SliceSync.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class AuthController : ControllerBase
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
@@ -178,7 +180,7 @@ namespace SliceSync.API.Controllers
             if (result.Succeeded)
             {
                 //check if user is present in DB
-                ApplicationUser user = await _userManager.FindByEmailAsync(loginDTO.Email);
+                ApplicationUser? user = await _userManager.FindByEmailAsync(loginDTO.Email);
 
                 if (user == null) {
                     Problem("Please add creds !!");
@@ -250,6 +252,74 @@ namespace SliceSync.API.Controllers
                 return BadRequest("User is not logged In !");
             }
 
+        }
+
+        // This API generates new JWT token
+        // using expired JWT token and valid refresh token.
+        //after every expiration of token, Client will send seperate API request for generate new jwt token 
+
+        [HttpPost("generate-new-jwt-token")]
+        public async Task<IActionResult> GenerateNewJwtAccessToken(TokenDTO tokenDTO)
+        {
+            // STEP 1:
+            // Check if request data is null
+            if (tokenDTO == null)
+            {
+                return BadRequest("Invalid Client request !!");
+            }
+
+            // STEP 2:
+            // Extract user details from expired JWT token with help of GetPrincipalfromJwtToken() method
+            ClaimsPrincipal? principal =
+                _jwtService.GetPrincipalfromJwtToken(tokenDTO.Token);
+
+            // STEP 3:
+            // Check if JWT token is invalid
+            if (principal == null)
+            {
+                return BadRequest("Invalid Jwt access toke !!");
+            }
+
+            // STEP 4:
+            // Get email from JWT claims
+            string? email =
+                principal.FindFirstValue(ClaimTypes.Email);
+
+            // STEP 5:
+            // Find user using email
+            ApplicationUser? user =
+                await _userManager.FindByEmailAsync(email);
+
+            // STEP 6:
+            // Validate refresh token
+            // Checks:
+            // 1. User exists
+            // 2. Refresh token matches
+            // 3. Refresh token is not expired
+
+            if (user == null
+                || tokenDTO.RefreshToken != user.JwtRefreshToken
+                || user.JwtRefreshTokenExpirationDateTime <= DateTime.Now)
+            {
+                return BadRequest("Invalid Refresh Token !!");
+            }
+
+            // STEP 7:
+            // Generate new JWT token and refresh token
+            var authenticationResponse =
+                _jwtService.CreateJwtToken(user);
+
+            // STEP 8:
+            // Store new refresh token in database
+            user.JwtRefreshToken =
+                authenticationResponse.JwtRefreshToken;
+
+            user.JwtRefreshTokenExpirationDateTime =
+                authenticationResponse.JwtRefreshTokenExpirationDateTime;
+
+            // STEP 9:
+            // Return newly generated tokens
+            return Ok(authenticationResponse);
         }
     }
 

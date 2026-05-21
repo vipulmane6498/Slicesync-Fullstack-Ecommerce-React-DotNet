@@ -12,7 +12,6 @@ namespace SliceSync.Core.IdentityEntities
     {
         public string? FullName { get; set; }
 
-
         public bool? IsActive { get; set; }
 
         public string? JwtRefreshToken { get; set; }

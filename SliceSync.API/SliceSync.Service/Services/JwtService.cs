@@ -5,6 +5,7 @@ using SliceSync.Core.IdentityEntities;
 using SliceSync.Core.ServiceContracts;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -68,8 +69,8 @@ namespace SliceSync.Service.Services
                 ),
 
                 // Store user email
-                new Claim(
-                    ClaimTypes.NameIdentifier,
+                new Claim( 
+                    ClaimTypes.Email,
                     applicationUser.Email
                 ),
 
@@ -163,5 +164,99 @@ namespace SliceSync.Service.Services
             // Result is an 88-character URL-safe string
             return Convert.ToBase64String(bytes);
         }
+
+
+
+        /// <summary>
+        /// Method Name: GetPrincipalfromJwtToken
+        /// Purpose:
+        /// This method is used to read and validate a JWT token.
+        /// It extracts the user's information (claims) from the token.
+        ///
+        /// Important:
+        /// Even if the JWT token is expired, we still want to read the user details.
+        /// That is why ValidateLifetime = false is used.
+        /// </summary>
+        /// <returns>
+        /// ClaimsPrincipal -> Contains user information like:
+        /// - User Id
+        /// - Email
+        /// - Roles     
+        // If token is invalid, method throws exception.
+        /// </returns>
+        public ClaimsPrincipal? GetPrincipalfromJwtToken(string? token)
+        {
+            // STEP 1:
+            // Set JWT validation rules
+
+            
+            
+            var tokenValidationParameter = new TokenValidationParameters()
+            {
+                // Check token audience
+                ValidateAudience = true,
+                ValidAudience = _configuration["Jwt:Audience"],
+
+                // Check token issuer
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+
+                // Check token signature using secret key
+                ValidateIssuerSigningKey = true,
+
+                // Secret key used to validate token
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])
+                ),
+
+                // Ignore token expiry time
+                // because we want to read expired token
+                ValidateLifetime = false,
+            };
+
+
+
+            // STEP 2:
+            // Create JWT token handler object
+
+            JwtSecurityTokenHandler jwtSecurityTokenHandler =
+                new JwtSecurityTokenHandler();
+
+
+
+            // STEP 3:
+            // Validate token and extract claims
+
+            ClaimsPrincipal principal =
+                jwtSecurityTokenHandler.ValidateToken(
+                    token,
+                    tokenValidationParameter,
+                    out SecurityToken securityToken
+                );
+
+
+
+            // STEP 4:
+            // Check token algorithm for extra security
+
+            if (
+                securityToken is not JwtSecurityToken jwtSecurityToken
+                || !jwtSecurityToken.Header.Alg.Equals(
+                    SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase
+                )
+            )
+            {
+                throw new SecurityTokenException("Invalid Token");
+            }
+
+
+
+            // STEP 5:
+            // Return extracted user details
+
+            return principal;
+        }
+
     }
 }
