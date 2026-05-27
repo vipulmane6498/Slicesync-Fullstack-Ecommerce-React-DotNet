@@ -13,6 +13,8 @@ namespace SliceSync.Core.ServiceContracts
         
         public Task<Category> AddCategories(CategoryDTO categoryDTO);
 
+        public Task<Category> UpdateCategories(CategoryDTO categoryDTO);
+
 
     }
 }

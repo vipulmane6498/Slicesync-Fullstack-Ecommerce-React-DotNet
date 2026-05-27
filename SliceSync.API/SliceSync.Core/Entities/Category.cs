@@ -10,7 +10,7 @@ namespace SliceSync.Core.Entities
     public class Category
     {
 
-        public Guid CategoryId { get; set; } 
+        public Guid CategoryId {    get; set; } 
 
         public string? CategoryType { get; set; }
 

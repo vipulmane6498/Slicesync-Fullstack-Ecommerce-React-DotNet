@@ -26,8 +26,17 @@ namespace SliceSync.API.Controllers
             var categories = await _categoryService.AddCategories(categoryDTO);
 
             return Ok(categories);
-           
-        }   
+            
+        }
+
+        
+        [HttpPut("editcategory")]
+        public async Task<IActionResult> EditCategory(CategoryDTO categoryDTO)
+        {
+           var updatedCategory= await _categoryService.UpdateCategories(categoryDTO);
+
+            return Ok(updatedCategory);
+        }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using SliceSync.Core.DTOs;
 using SliceSync.Core.Entities;
 using SliceSync.Core.ServiceContracts;
@@ -44,6 +45,27 @@ namespace SliceSync.Service.Services
 
             return createdCategories.Entity;
             
+        }
+
+
+        public async Task<Category> UpdateCategories(CategoryDTO categoryDTO)
+        {
+            //find in db
+            Category? category = await _context.Categories.FirstOrDefaultAsync(a => a.CategoryType == categoryDTO.CategoryType);
+
+            if (category == null)
+            {
+                throw new Exception("Category should not be null here !");
+            }
+
+            //update in Category           
+            category.CategoryName = categoryDTO.CategoryName;
+            category.IsActive = categoryDTO.IsActive;
+
+            _context.Update(category);
+            await _context.SaveChangesAsync();
+
+            return category;
         }
     }
 }
