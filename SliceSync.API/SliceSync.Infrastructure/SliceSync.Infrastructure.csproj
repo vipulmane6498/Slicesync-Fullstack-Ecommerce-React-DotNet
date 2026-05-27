@@ -24,4 +24,8 @@
     <ProjectReference Include="..\SliceSync.Core\SliceSync.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

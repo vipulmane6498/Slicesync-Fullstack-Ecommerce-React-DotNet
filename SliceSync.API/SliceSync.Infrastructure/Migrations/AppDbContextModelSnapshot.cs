@@ -125,6 +125,74 @@ namespace SliceSync.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SliceSync.Core.Entities.Category", b =>
+                {
+                    b.Property<Guid>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CategoryType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("SliceSync.Core.Entities.Pizza", b =>
+                {
+                    b.Property<Guid>("PizzaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsSoldOut")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PizzaDesciption")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PizzaName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Unitprice")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("PizzaId");
+
+                    b.ToTable("Pizzas");
+                });
+
+            modelBuilder.Entity("SliceSync.Core.Entities.PizzaCategoryMapping", b =>
+                {
+                    b.Property<Guid>("PizzaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PizzaId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("PizzaCategoryMappings");
+                });
+
             modelBuilder.Entity("SliceSync.Core.IdentityEntities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -280,6 +348,35 @@ namespace SliceSync.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SliceSync.Core.Entities.PizzaCategoryMapping", b =>
+                {
+                    b.HasOne("SliceSync.Core.Entities.Category", "Category")
+                        .WithMany("pizzaCategoryMapping")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SliceSync.Core.Entities.Pizza", "Pizza")
+                        .WithMany("pizzaCategoryMapping")
+                        .HasForeignKey("PizzaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Pizza");
+                });
+
+            modelBuilder.Entity("SliceSync.Core.Entities.Category", b =>
+                {
+                    b.Navigation("pizzaCategoryMapping");
+                });
+
+            modelBuilder.Entity("SliceSync.Core.Entities.Pizza", b =>
+                {
+                    b.Navigation("pizzaCategoryMapping");
                 });
 #pragma warning restore 612, 618
         }

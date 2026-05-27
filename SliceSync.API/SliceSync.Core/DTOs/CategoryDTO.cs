@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SliceSync.Core.DTOs
+{
+    public class CategoryDTO
+    {
+      
+
+        public string? CategoryType { get; set; }
+        public required string? CategoryName { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+}

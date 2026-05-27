@@ -30,7 +30,7 @@ namespace SliceSync.API.Controllers
             _jwtService = jwtService;
         }
 
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Registeration(RegisterDTO registerDTO)
         {

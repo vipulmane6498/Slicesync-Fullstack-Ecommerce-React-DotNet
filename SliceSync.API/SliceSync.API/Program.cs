@@ -23,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddAuthorization();
 
 //Configured Identity
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -35,6 +36,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 //Controller
 builder.Services.AddControllers();
 builder.Services.AddTransient<IJwtService, JwtService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
