@@ -75,7 +75,7 @@ namespace SliceSync.API.Middlewares
                 // Send exception message to the client
                 await httpContext.Response.WriteAsync(ex.Message);
             }
-        }
+            }
     }
 
     // Extension class used to register middleware easily

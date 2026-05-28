@@ -23,7 +23,7 @@ namespace SliceSync.API.Controllers
         [HttpPost("addcategory")]
         public async Task<IActionResult> AddCategory(CategoryDTO categoryDTO)
         {
-            var categories = await _categoryService.AddCategories(categoryDTO);
+            var categories = await _categoryService.AddCategory(categoryDTO);
 
             return Ok(categories);
             
@@ -33,9 +33,17 @@ namespace SliceSync.API.Controllers
         [HttpPut("editcategory")]
         public async Task<IActionResult> EditCategory(CategoryDTO categoryDTO)
         {
-           var updatedCategory= await _categoryService.UpdateCategories(categoryDTO);
+           var updatedCategory= await _categoryService.UpdateCategory(categoryDTO);
 
             return Ok(updatedCategory);
+        }
+
+        [HttpDelete("removecategorybyid")]
+        public async Task<IActionResult> RemoveCategoryById(Guid id)
+        {
+          var deletedCategory= await _categoryService.DeleteCategoryById(id);
+
+        return Ok($"Provided id: {id} is deleted !!");
         }
 
     }

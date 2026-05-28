@@ -22,7 +22,7 @@ namespace SliceSync.Service.Services
 
        
 
-        public async Task<Category> AddCategories(CategoryDTO dto)
+        public async Task<Category> AddCategory(CategoryDTO dto)
         {
 
             var category = new Category()
@@ -48,7 +48,7 @@ namespace SliceSync.Service.Services
         }
 
 
-        public async Task<Category> UpdateCategories(CategoryDTO categoryDTO)
+        public async Task<Category> UpdateCategory(CategoryDTO categoryDTO)
         {
             //find in db
             Category? category = await _context.Categories.FirstOrDefaultAsync(a => a.CategoryType == categoryDTO.CategoryType);
@@ -66,6 +66,23 @@ namespace SliceSync.Service.Services
             await _context.SaveChangesAsync();
 
             return category;
+        }
+        public async Task<bool> DeleteCategoryById(Guid id)
+        {
+          Category? category= await _context.Categories.FirstOrDefaultAsync(a => a.CategoryId == id);
+
+            if(category == null)
+            {                
+            throw new Exception("Please provide some id! ");
+            }
+
+
+            _context.Remove(category);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+
         }
     }
 }
