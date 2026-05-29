@@ -84,5 +84,28 @@ namespace SliceSync.Service.Services
             return true;
 
         }
+
+        public async Task<List<Category>> GetAllCategories()
+        {
+           return await _context.Categories.ToListAsync();            
+        }
+
+        //public async Task<bool> DeleteAllCategories()
+        //{
+
+        //    //Get all categories from DB
+        //    var getAllCategories = _context.Categories.ToListAsync();
+
+        //    //delete from categories from db
+        //    _context.RemoveRange(getAllCategories);
+
+        //    await _context.SaveChangesAsync();
+
+        //    return true;
+
+
+        //}
+
+       
     }
 }

@@ -46,5 +46,25 @@ namespace SliceSync.API.Controllers
         return Ok($"Provided id: {id} is deleted !!");
         }
 
+
+        [HttpGet("getallcategories")]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            List<Category> allCategories = await _categoryService.GetAllCategories();
+
+            if (allCategories != null)
+            {
+                return Ok(allCategories);
+            }
+
+            return NotFound("Categories does not exist, Please add !!");
+        }
+        //[HttpDelete("removeallcategories")]
+        //public async Task<IActionResult> RemoveAllCategories()
+        //{
+        //  var deletedAllCategories =  _categoryService.DeleteAllCategories();
+        //    return Ok("Deleted All Categories");
+        //}
+
     }
 }
