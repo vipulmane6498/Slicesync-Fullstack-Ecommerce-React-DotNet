@@ -90,6 +90,18 @@ namespace SliceSync.Service.Services
            return await _context.Categories.ToListAsync();            
         }
 
+        public async Task<Category> GetCategoryById(Guid id)
+        {
+          Category? category=  await  _context.Categories.FirstOrDefaultAsync(a => a.CategoryId == id);
+
+            if(category == null)
+            {
+                throw new Exception("Please provide some id! ");
+            }
+            return category;
+        }
+
+
         //public async Task<bool> DeleteAllCategories()
         //{
 
@@ -106,6 +118,6 @@ namespace SliceSync.Service.Services
 
         //}
 
-       
+
     }
 }

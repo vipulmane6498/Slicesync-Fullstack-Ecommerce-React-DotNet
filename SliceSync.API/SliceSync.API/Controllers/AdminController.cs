@@ -59,6 +59,15 @@ namespace SliceSync.API.Controllers
 
             return NotFound("Categories does not exist, Please add !!");
         }
+
+
+        [HttpGet("getcategorybyid")]
+        public async Task<IActionResult> GetCategoryById(Guid id)
+        {
+          var category= await _categoryService.GetCategoryById(id);
+
+            return Ok(category);
+        }
         //[HttpDelete("removeallcategories")]
         //public async Task<IActionResult> RemoveAllCategories()
         //{
