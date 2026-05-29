@@ -102,21 +102,21 @@ namespace SliceSync.Service.Services
         }
 
 
-        //public async Task<bool> DeleteAllCategories()
-        //{
+        public async Task<bool> DeleteAllCategories()
+        {
 
-        //    //Get all categories from DB
-        //    var getAllCategories = _context.Categories.ToListAsync();
+            //Get all categories from DB
+            List<Category> getAllCategories =await _context.Categories.ToListAsync();
 
-        //    //delete from categories from db
-        //    _context.RemoveRange(getAllCategories);
+            //delete from categories from db
+            _context.RemoveRange(getAllCategories);
 
-        //    await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-        //    return true;
+            return true;
 
 
-        //}
+        }
 
 
     }

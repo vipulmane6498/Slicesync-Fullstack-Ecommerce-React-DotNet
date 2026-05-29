@@ -68,12 +68,14 @@ namespace SliceSync.API.Controllers
 
             return Ok(category);
         }
-        //[HttpDelete("removeallcategories")]
-        //public async Task<IActionResult> RemoveAllCategories()
-        //{
-        //  var deletedAllCategories =  _categoryService.DeleteAllCategories();
-        //    return Ok("Deleted All Categories");
-        //}
+
+
+        [HttpDelete("removeallcategories")]
+        public async Task<IActionResult> RemoveAllCategories()
+        {
+            var deletedAllCategories =await  _categoryService.DeleteAllCategories();
+            return Ok("Deleted All Categories");
+        }
 
     }
 }

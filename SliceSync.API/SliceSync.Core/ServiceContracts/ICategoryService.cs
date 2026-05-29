@@ -21,7 +21,7 @@ namespace SliceSync.Core.ServiceContracts
 
         public Task<Category> GetCategoryById(Guid id);
 
-        // public Task<bool> DeleteAllCategories();
+         public Task<bool> DeleteAllCategories();
 
 
 
