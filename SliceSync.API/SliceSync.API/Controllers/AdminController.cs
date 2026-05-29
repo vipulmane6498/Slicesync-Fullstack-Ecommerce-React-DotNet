@@ -69,6 +69,19 @@ namespace SliceSync.API.Controllers
             return Ok(category);
         }
 
+        [HttpGet("getcategorybytype")]
+        public async Task<IActionResult> GetCategoryByType([FromQuery]string categoryType)
+        {
+
+            if(categoryType == null)
+            {
+                return Problem("Please provide the CategoryType!!");
+            }
+
+           var receivedCategory= await _categoryService.GetCategoryByType(categoryType);
+
+            return Ok(receivedCategory);
+        }
 
         [HttpDelete("removeallcategories")]
         public async Task<IActionResult> RemoveAllCategories()
@@ -76,6 +89,8 @@ namespace SliceSync.API.Controllers
             var deletedAllCategories =await  _categoryService.DeleteAllCategories();
             return Ok("Deleted All Categories");
         }
+
+
 
     }
 }

@@ -11,7 +11,7 @@ namespace SliceSync.Core.DTOs
       
 
         public string? CategoryType { get; set; }
-        public required string? CategoryName { get; set; }
+        public  string? CategoryName { get; set; }
 
         public bool? IsActive { get; set; }
     }

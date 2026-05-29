@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using SliceSync.Core.DTOs;
 using SliceSync.Core.Entities;
@@ -118,6 +119,17 @@ namespace SliceSync.Service.Services
 
         }
 
+        public async Task<List<Category>> GetCategoryByType(string categoryType)
+        {
+            //find  the type in db and fetch all
+            List<Category> category = await _context.Categories.Where(a => a.CategoryType == categoryType).ToListAsync();
 
+            //if(category == null)
+            //{
+            //    throw new Exception("Please provide the existing category type!!");
+            //}
+            // //return it
+            return category;
+        }
     }
 }
