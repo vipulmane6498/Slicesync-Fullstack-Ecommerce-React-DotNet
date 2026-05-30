@@ -19,5 +19,7 @@ namespace SliceSync.Core.Entities
         public bool? IsActive { get; set; }
 
         public ICollection<PizzaCategoryMapping> pizzaCategoryMapping { get; set; } = new List<PizzaCategoryMapping>();
+
+     
     }
 }

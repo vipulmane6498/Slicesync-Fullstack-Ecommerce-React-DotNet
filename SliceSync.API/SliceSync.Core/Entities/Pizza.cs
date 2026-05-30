@@ -28,7 +28,7 @@ namespace SliceSync.Core.Entities
 
         public DateTime? CreateAt { get; set; } = DateTime.Now;
 
-        public required ICollection<PizzaCategoryMapping> pizzaCategoryMapping { get; set; } = new List<PizzaCategoryMapping>();
+        public ICollection<PizzaCategoryMapping> PizzaCategoryMappings { get; set; } = new List<PizzaCategoryMapping>();
 
 
 

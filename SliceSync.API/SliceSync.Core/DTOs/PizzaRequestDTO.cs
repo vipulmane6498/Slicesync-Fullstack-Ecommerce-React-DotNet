@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace SliceSync.Core.DTOs
 {
-    public class PizzaDTO
+    public class PizzaRequestDTO
     {
         //public int PizzaId { get; set; }
-        public required string PizzaName { get; set; }
+        public string PizzaName { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
         public decimal Unitprice { get; set; }
@@ -28,6 +28,8 @@ namespace SliceSync.Core.DTOs
 
         //public DateTime? CreateAt { get; set; } = DateTime.Now;
 
-        public required ICollection<PizzaCategoryMapping> pizzaCategoryMapping { get; set; }
+        public List<Guid> CategoryId { get; set; } = new List<Guid>();
+
+       
     }
 }

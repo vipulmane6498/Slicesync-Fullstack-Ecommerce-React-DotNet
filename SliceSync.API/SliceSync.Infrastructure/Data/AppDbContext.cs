@@ -18,8 +18,8 @@ namespace SliceSync.Infrastructure.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        public DbSet<Pizza> Pizzas { get; set; }
-             public DbSet<Category> Categories{ get; set; }
+            public DbSet<Pizza> Pizzas { get; set; }
+            public DbSet<Category> Categories{ get; set; }
             public DbSet<PizzaCategoryMapping> PizzaCategoryMappings{ get; set; }
 
         public async Task ToListAsunc(Category? category)
@@ -39,7 +39,7 @@ namespace SliceSync.Infrastructure.Data
             //Pizza -> PizzaCategoryMapping
             modelbuilder.Entity<PizzaCategoryMapping>()
                 .HasOne(pc => pc.Pizza) 
-                .WithMany(p => p.pizzaCategoryMapping)
+                .WithMany(p => p.PizzaCategoryMappings)
                 .HasForeignKey(pc => pc.PizzaId);
 
             //Category -> PizzaCategoryMapping

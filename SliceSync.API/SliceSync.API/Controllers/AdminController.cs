@@ -14,10 +14,12 @@ namespace SliceSync.API.Controllers
     {
 
         private readonly ICategoryService _categoryService;
+        private readonly IPizzaService _pizzaService;
 
-        public AdminController(ICategoryService categoryService) {
+        public AdminController(ICategoryService categoryService, IPizzaService pizzaService) {
         
             _categoryService = categoryService;
+            _pizzaService= pizzaService;    
         }
 
         [HttpPost("addcategory")]
@@ -90,7 +92,20 @@ namespace SliceSync.API.Controllers
             return Ok("Deleted All Categories");
         }
 
+        //---------------Pizza----------------------------
 
+        [HttpPost("addpizza")]
+        public async Task<IActionResult> AddPizza(PizzaRequestDTO pizza)
+        {
+            if (pizza == null)
+            {
+                return BadRequest("Please provide Pizza Details to add !");
+            }
+
+            var pizzaAdded = await _pizzaService.AddPizza(pizza);
+
+            return Ok(pizzaAdded);
+        }
 
     }
 }

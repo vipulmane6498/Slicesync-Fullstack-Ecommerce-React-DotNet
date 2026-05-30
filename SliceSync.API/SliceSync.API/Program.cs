@@ -37,6 +37,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 builder.Services.AddControllers();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<IPizzaService, PizzaService>();
 
 var app = builder.Build();
 
@@ -60,6 +61,7 @@ app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseStaticFiles();
 
 //auth for login
 app.UseAuthentication();
