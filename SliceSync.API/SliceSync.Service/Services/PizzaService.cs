@@ -71,21 +71,22 @@ namespace SliceSync.Service.Services
                 CreateAt = pizza.CreateAt ?? DateTime.UtcNow,
                 Categories = foundCategories.Select(c => new CategoryResonseDTO
                 {
-                    CategoryType=c.CategoryType,
+                    CategoryType = c.CategoryType,
                     CategoryName = c.CategoryName, // Assuming property name is CategoryName
-                    IsActive=c.IsActive
+                    IsActive = c.IsActive
                 }).ToList()
             };
 
             return response;
         }
 
+
         public async Task<PizzaResponseDTO> GetPizzaById(Guid id)
         {
-           var foundPizza= await _appDbContext.Pizzas
-                .Include(p=>p.PizzaCategoryMappings)
-                .ThenInclude(c=>c.Category)
-                .FirstOrDefaultAsync(p=>p.PizzaId==id);
+            var foundPizza = await _appDbContext.Pizzas
+                 .Include(p => p.PizzaCategoryMappings)
+                 .ThenInclude(c => c.Category)
+                 .FirstOrDefaultAsync(p => p.PizzaId == id);
 
             if (foundPizza == null)
             {
@@ -112,5 +113,23 @@ namespace SliceSync.Service.Services
 
             return response;
         }
+
+        public async Task<bool> DetelePizzaById(Guid id)
+        {
+            var foundPizza = await _appDbContext.Pizzas.Include(p => p.PizzaCategoryMappings)
+                 .ThenInclude(pcm => pcm.Category)
+                 .FirstOrDefaultAsync(p => p.PizzaId == id);
+
+            if (foundPizza == null)
+            {
+                throw new KeyNotFoundException($"Provided pizza id: {id} not found!");
+            }
+
+            _appDbContext.Pizzas.Remove(foundPizza);
+            await _appDbContext.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }
