@@ -17,7 +17,7 @@ namespace SliceSync.Core.ServiceContracts
 
         public Task<PizzaResponseDTO> GetPizzaById(Guid id);
 
-        //public Task<List<PizzaResponseDTO>> GetllAllPizzas();
+        public Task<List<PizzaResponseDTO>> GetllAllPizzas();
 
         public Task<bool> DetelePizzaById(Guid id);
 

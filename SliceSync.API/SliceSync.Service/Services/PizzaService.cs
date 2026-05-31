@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using SliceSync.Core.DTOs;
 using SliceSync.Core.Entities;
@@ -131,5 +132,39 @@ namespace SliceSync.Service.Services
             return true;
         }
 
-    }
+        public async Task<List<PizzaResponseDTO>> GetllAllPizzas()
+        {
+
+         var allPizza = await _appDbContext.Pizzas.Include(p=>p.PizzaCategoryMappings).ThenInclude(pcm=>pcm.Category).ToListAsync();
+
+
+            var responseList = new List<PizzaResponseDTO>();
+
+            foreach (var pizza in allPizza)
+            {
+                var response = new PizzaResponseDTO()
+                {
+                    PizzaId = pizza.PizzaId,
+                    PizzaName = pizza.PizzaName,
+                    Unitprice = pizza.Unitprice,
+                    Image = pizza.Image,
+                    PizzaDesciption = pizza.PizzaDesciption,
+                    IsSoldOut = pizza.IsSoldOut ?? false,
+                    IsActive = pizza.IsActive ?? false,
+                    CreateAt = pizza.CreateAt ?? DateTime.UtcNow,
+                    Categories = pizza.PizzaCategoryMappings?.Select(pcm => new CategoryResonseDTO
+                    {
+                        CategoryType = pcm.Category.CategoryType,
+                        CategoryName = pcm.Category.CategoryName,
+                        IsActive = pcm.Category.IsActive ?? false,
+                    }).ToList() ?? new List<CategoryResonseDTO>()
+                };
+                responseList.Add(response);
+            }
+
+            return responseList;
+        }
+           
+        }   
+    
 }

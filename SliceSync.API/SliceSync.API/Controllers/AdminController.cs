@@ -127,7 +127,15 @@ namespace SliceSync.API.Controllers
 
             return Ok($"Pizza(id: {id}) deleted successfully!");   
 
-        } 
+        }
+
+        [HttpGet("getallpizza")]
+        public async Task<IActionResult> GetAllPizzas()
+        {
+          var allPizza= await _pizzaService.GetllAllPizzas();
+
+            return Ok(allPizza);
+        }
 
     }
 }
