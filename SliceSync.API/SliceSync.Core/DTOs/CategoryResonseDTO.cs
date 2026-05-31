@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace SliceSync.Core.DTOs
 {
-    public class CategoryDTO
+    public class CategoryResonseDTO
     {
-      
-
         public string? CategoryType { get; set; }
-        public  string? CategoryName { get; set; }
-
+        public string? CategoryName { get; set; }
         public bool? IsActive { get; set; }
     }
 }

@@ -16,6 +16,6 @@ namespace SliceSync.Core.DTOs
         public bool IsSoldOut { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreateAt { get; set; }
-        public List<CategoryDTO> Categories { get; set; }
+        public List<CategoryResonseDTO> Categories { get; set; }
     }
 }

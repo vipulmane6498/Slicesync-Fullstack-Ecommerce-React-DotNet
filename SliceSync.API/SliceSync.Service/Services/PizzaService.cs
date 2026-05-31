@@ -69,18 +69,48 @@ namespace SliceSync.Service.Services
                 IsSoldOut = pizza.IsSoldOut ?? false,
                 IsActive = pizza.IsActive ?? false,
                 CreateAt = pizza.CreateAt ?? DateTime.UtcNow,
-                Categories = foundCategories.Select(c => new CategoryDTO
+                Categories = foundCategories.Select(c => new CategoryResonseDTO
                 {
                     CategoryType=c.CategoryType,
                     CategoryName = c.CategoryName, // Assuming property name is CategoryName
-                   IsActive=c.IsActive
+                    IsActive=c.IsActive
                 }).ToList()
             };
 
             return response;
+        }
 
+        public async Task<PizzaResponseDTO> GetPizzaById(Guid id)
+        {
+           var foundPizza= await _appDbContext.Pizzas
+                .Include(p=>p.PizzaCategoryMappings)
+                .ThenInclude(c=>c.Category)
+                .FirstOrDefaultAsync(p=>p.PizzaId==id);
 
+            if (foundPizza == null)
+            {
+                throw new KeyNotFoundException($"Pizza id: {id} not found!");
+            }
 
+            var response = new PizzaResponseDTO()
+            {
+                PizzaId = foundPizza.PizzaId,
+                PizzaName = foundPizza.PizzaName,
+                Unitprice = foundPizza.Unitprice,
+                Image = foundPizza.Image,
+                PizzaDesciption = foundPizza.PizzaDesciption,
+                IsSoldOut = foundPizza.IsSoldOut ?? false,
+                IsActive = foundPizza.IsActive ?? false,
+                CreateAt = foundPizza.CreateAt ?? DateTime.UtcNow,
+                Categories = foundPizza.PizzaCategoryMappings?.Select(pcm => new CategoryResonseDTO
+                {
+                    CategoryType = pcm.Category.CategoryType,
+                    CategoryName = pcm.Category.CategoryName,
+                    IsActive = pcm.Category.IsActive ?? false,
+                }).ToList() ?? new List<CategoryResonseDTO>()
+            };
+
+            return response;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SliceSync.Service.Services
 
        
 
-        public async Task<Category> AddCategory(CategoryDTO dto)
+        public async Task<Category> AddCategory(CategoryResonseDTO dto)
         {
 
             var category = new Category()
@@ -49,7 +49,7 @@ namespace SliceSync.Service.Services
         }
 
 
-        public async Task<Category> UpdateCategory(CategoryDTO categoryDTO)
+        public async Task<Category> UpdateCategory(CategoryResonseDTO categoryDTO)
         {
             //find in db
             Category? category = await _context.Categories.FirstOrDefaultAsync(a => a.CategoryType == categoryDTO.CategoryType);

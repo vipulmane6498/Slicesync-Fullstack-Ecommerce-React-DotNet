@@ -23,7 +23,7 @@ namespace SliceSync.API.Controllers
         }
 
         [HttpPost("addcategory")]
-        public async Task<IActionResult> AddCategory(CategoryDTO categoryDTO)
+        public async Task<IActionResult> AddCategory(CategoryResonseDTO categoryDTO)
         {
             var categories = await _categoryService.AddCategory(categoryDTO);
 
@@ -33,7 +33,7 @@ namespace SliceSync.API.Controllers
 
         
         [HttpPut("editcategory")]
-        public async Task<IActionResult> EditCategory(CategoryDTO categoryDTO)
+        public async Task<IActionResult> EditCategory(CategoryResonseDTO categoryDTO)
         {
            var updatedCategory= await _categoryService.UpdateCategory(categoryDTO);
 
@@ -105,6 +105,19 @@ namespace SliceSync.API.Controllers
             var pizzaAdded = await _pizzaService.AddPizza(pizza);
 
             return Ok(pizzaAdded);
+        }
+
+        [HttpGet("getpizzabyid")]
+        public async Task<IActionResult> GetPizzaById([FromQuery]Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest("Please provide id !!");
+            }
+
+            var pizza = await _pizzaService.GetPizzaById(id);
+
+            return Ok(pizza);
         }
 
     }
