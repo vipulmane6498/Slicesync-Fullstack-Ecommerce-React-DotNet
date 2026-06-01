@@ -13,7 +13,7 @@ namespace SliceSync.Core.ServiceContracts
 
         public Task<PizzaResponseDTO> AddPizza(PizzaRequestDTO pizzaDTO);
 
-        // public Task<PizzaResponseDTO> UpdatePizza(PizzaRequestDTO pizzaRequestDTO);
+        public Task<PizzaResponseDTO> UpdatePizza(Guid id, PizzaRequestDTO pizzaRequestDTO);
 
         public Task<PizzaResponseDTO> GetPizzaById(Guid id);
 

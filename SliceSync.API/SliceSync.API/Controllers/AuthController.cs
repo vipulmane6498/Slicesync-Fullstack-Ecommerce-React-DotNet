@@ -13,7 +13,7 @@ namespace SliceSync.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class AuthController : ControllerBase
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
@@ -30,7 +30,7 @@ namespace SliceSync.API.Controllers
             _jwtService = jwtService;
         }
 
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Registeration(RegisterDTO registerDTO)
         {
@@ -139,7 +139,7 @@ namespace SliceSync.API.Controllers
 
 
                 //call JWT method and store the token with user details in variable and return to client
-                var authenticationResponse =  _jwtService.CreateJwtToken(user);
+                var authenticationResponse = _jwtService.CreateJwtToken(user);
 
                 // Store the newly generated refresh token on the user record
                 user.JwtRefreshToken = authenticationResponse.JwtRefreshToken;
@@ -166,7 +166,7 @@ namespace SliceSync.API.Controllers
 
         [HttpGet("login")]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
-            {
+        {
             if (ModelState.IsValid == false)
             {
                 return BadRequest("invalid Creds");
@@ -182,7 +182,8 @@ namespace SliceSync.API.Controllers
                 //check if user is present in DB
                 ApplicationUser? user = await _userManager.FindByEmailAsync(loginDTO.Email);
 
-                if (user == null) {
+                if (user == null)
+                {
                     Problem("Please add creds !!");
                 }
 
@@ -206,7 +207,7 @@ namespace SliceSync.API.Controllers
 
 
                 //call JWT method and store the token with user details in variable and return to client
-                var authenticationResponse =  _jwtService.CreateJwtToken(user);
+                var authenticationResponse = _jwtService.CreateJwtToken(user);
 
                 // Store the newly generated refresh token on the user record table
                 user.JwtRefreshToken = authenticationResponse.JwtRefreshToken;
@@ -321,6 +322,7 @@ namespace SliceSync.API.Controllers
             // Return newly generated tokens
             return Ok(authenticationResponse);
         }
+
     }
 
 }

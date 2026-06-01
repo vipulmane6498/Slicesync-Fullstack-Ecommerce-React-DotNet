@@ -145,5 +145,18 @@ namespace SliceSync.API.Controllers
             return Ok("All pizzas deleted sucessfully");
         }
 
+        [HttpPatch("updatepizza")]
+        public async Task<IActionResult> EditPizza([FromQuery]Guid id, [FromBody]PizzaRequestDTO pizzaRequestDTO)
+        {
+            if (pizzaRequestDTO == null)
+            {
+                return BadRequest("Request body cannot be empty!");
+            }
+
+            var updatedPizza=await _pizzaService.UpdatePizza(id, pizzaRequestDTO);
+
+            return Ok(updatedPizza);
+        }
+
     }
 }

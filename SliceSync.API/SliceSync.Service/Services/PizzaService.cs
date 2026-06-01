@@ -174,6 +174,80 @@ namespace SliceSync.Service.Services
 
             return true;
         }
+
+        public async Task<PizzaResponseDTO> UpdatePizza(Guid id, PizzaRequestDTO pizzaRequestDTO)
+        {
+            var foundPizza = await _appDbContext.Pizzas.Include(p => p.PizzaCategoryMappings)
+                 .ThenInclude(c => c.Category)
+                 .FirstOrDefaultAsync(p => p.PizzaId == id);
+
+            if (foundPizza == null)
+            {
+                throw new KeyNotFoundException($"Provided Pizza id: {id} not available!");
+            }
+
+            List<Category> foundCategories = new List<Category>();
+            foreach (var cat in pizzaRequestDTO.CategoryId)
+            {
+                var result = await _appDbContext.Categories.FirstOrDefaultAsync(c => c.CategoryId == cat);
+
+                if (result != null)
+                {
+                    foundCategories.Add(result);
+
+                }
+            }
+            if (foundCategories == null)
+            {
+                throw new KeyNotFoundException($"Provided Category id not available!");
+            }
+
+            //update pizza
+            foundPizza.PizzaName = pizzaRequestDTO.PizzaName;
+            foundPizza.Unitprice = pizzaRequestDTO.Unitprice;
+            foundPizza.Image = pizzaRequestDTO.ImageUrl;
+            foundPizza.PizzaDesciption = pizzaRequestDTO.PizzaDesciption;
+            foundPizza.IsSoldOut = pizzaRequestDTO.IsSoldOut;
+            foundPizza.IsActive = pizzaRequestDTO.IsActive;
+
+            // Remove all existing category mappings for this pizza
+            // This ensures no old categories remain before adding the updated ones
+            foundPizza.PizzaCategoryMappings.Clear();
+
+            //updating => adding categoryid one by one received from pizzaRequestResponse
+            foreach (var category in foundCategories)
+            {
+                foundPizza.PizzaCategoryMappings.Add(new PizzaCategoryMapping()
+                {
+                    PizzaId = id,
+                    CategoryId = category.CategoryId
+                });
+            }
+            var updatedPizza = _appDbContext.Pizzas.Update(foundPizza);
+            await _appDbContext.SaveChangesAsync();
+
+            //return the responseDTO
+            var response = new PizzaResponseDTO()
+            {
+                PizzaId = id,
+                PizzaName = foundPizza.PizzaName,
+                Unitprice = foundPizza.Unitprice,
+                Image = foundPizza.Image,
+                PizzaDesciption = foundPizza.PizzaDesciption,
+                IsSoldOut = foundPizza.IsSoldOut ?? false,
+                IsActive = foundPizza.IsActive ?? true,
+                CreateAt = foundPizza.CreateAt ?? DateTime.UtcNow,
+
+                Categories = foundPizza.PizzaCategoryMappings?.Select(pcm => new CategoryResonseDTO
+                {
+                    CategoryType = pcm.Category.CategoryType,
+                    CategoryName = pcm.Category.CategoryName,
+                    IsActive = pcm.Category.IsActive
+                }).ToList() ?? new List<CategoryResonseDTO>()
+            };
+
+            return response;
+        }
     }
 
 }
