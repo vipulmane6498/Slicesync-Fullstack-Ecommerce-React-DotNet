@@ -21,6 +21,6 @@ namespace SliceSync.Core.ServiceContracts
 
         public Task<bool> DetelePizzaById(Guid id);
 
-        //public Task<bool> DeleteAllPizzas();
+        public Task<bool> DeleteAllPizzas();
     }
 }

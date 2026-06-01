@@ -135,7 +135,7 @@ namespace SliceSync.Service.Services
         public async Task<List<PizzaResponseDTO>> GetllAllPizzas()
         {
 
-         var allPizza = await _appDbContext.Pizzas.Include(p=>p.PizzaCategoryMappings).ThenInclude(pcm=>pcm.Category).ToListAsync();
+            var allPizza = await _appDbContext.Pizzas.Include(p => p.PizzaCategoryMappings).ThenInclude(pcm => pcm.Category).ToListAsync();
 
 
             var responseList = new List<PizzaResponseDTO>();
@@ -164,7 +164,16 @@ namespace SliceSync.Service.Services
 
             return responseList;
         }
-           
-        }   
-    
+
+        public async Task<bool> DeleteAllPizzas()
+        {
+            List<Pizza> getAllPizzas = await _appDbContext.Pizzas.ToListAsync();
+
+            _appDbContext.Pizzas.RemoveRange(getAllPizzas);
+            await _appDbContext.SaveChangesAsync();
+
+            return true;
+        }
+    }
+
 }

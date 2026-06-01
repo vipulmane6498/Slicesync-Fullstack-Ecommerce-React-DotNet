@@ -137,5 +137,13 @@ namespace SliceSync.API.Controllers
             return Ok(allPizza);
         }
 
+        [HttpDelete("deleteallpizza")]
+        public async Task<IActionResult> RemoveAllPizzas()
+        {
+            await _pizzaService.DeleteAllPizzas();
+
+            return Ok("All pizzas deleted sucessfully");
+        }
+
     }
 }
