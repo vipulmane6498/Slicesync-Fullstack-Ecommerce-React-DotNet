@@ -177,6 +177,7 @@ namespace SliceSync.Service.Services
 
         public async Task<PizzaResponseDTO> UpdatePizza(Guid id, PizzaRequestDTO pizzaRequestDTO)
         {
+            //Check if pizza id found
             var foundPizza = await _appDbContext.Pizzas.Include(p => p.PizzaCategoryMappings)
                  .ThenInclude(c => c.Category)
                  .FirstOrDefaultAsync(p => p.PizzaId == id);
@@ -186,6 +187,7 @@ namespace SliceSync.Service.Services
                 throw new KeyNotFoundException($"Provided Pizza id: {id} not available!");
             }
 
+            //check if category id found
             List<Category> foundCategories = new List<Category>();
             foreach (var cat in pizzaRequestDTO.CategoryId)
             {
@@ -214,7 +216,7 @@ namespace SliceSync.Service.Services
             // This ensures no old categories remain before adding the updated ones
             foundPizza.PizzaCategoryMappings.Clear();
 
-            //updating => adding categoryid one by one received from pizzaRequestResponse
+            //updating pizzaCategoryMapping=> adding categoryid one by one received from pizzaRequestResponse
             foreach (var category in foundCategories)
             {
                 foundPizza.PizzaCategoryMappings.Add(new PizzaCategoryMapping()
