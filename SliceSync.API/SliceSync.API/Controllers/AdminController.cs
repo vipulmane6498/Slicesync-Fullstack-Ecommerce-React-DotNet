@@ -23,9 +23,9 @@ namespace SliceSync.API.Controllers
         }
 
         [HttpPost("addcategory")]
-        public async Task<IActionResult> AddCategory(CategoryResonseDTO categoryDTO)
+        public async Task<IActionResult> AddCategory(CategoryRequestDTO categoryRequestDTO)
         {
-            var categories = await _categoryService.AddCategory(categoryDTO);
+            var categories = await _categoryService.AddCategory(categoryRequestDTO);
 
             return Ok(categories);
             

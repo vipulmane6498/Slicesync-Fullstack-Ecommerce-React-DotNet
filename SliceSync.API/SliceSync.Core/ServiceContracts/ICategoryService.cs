@@ -11,7 +11,7 @@ namespace SliceSync.Core.ServiceContracts
     public interface ICategoryService
     {
         
-        public Task<Category> AddCategory(CategoryResonseDTO categoryDTO);
+        public Task<CategoryResonseDTO> AddCategory(CategoryRequestDTO categoryRequestDTO);
 
         public Task<Category> UpdateCategory(CategoryResonseDTO categoryDTO);
 

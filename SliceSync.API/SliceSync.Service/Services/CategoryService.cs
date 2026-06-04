@@ -23,15 +23,15 @@ namespace SliceSync.Service.Services
 
        
 
-        public async Task<Category> AddCategory(CategoryResonseDTO dto)
+        public async Task<CategoryResonseDTO> AddCategory(CategoryRequestDTO categoryRequestDTO)
         {
 
             var category = new Category()
             {
                 CategoryId = Guid.NewGuid(),
-                CategoryType = dto.CategoryType,
-                CategoryName = dto.CategoryName,
-                IsActive = dto.IsActive
+                CategoryType = categoryRequestDTO.CategoryType,
+                CategoryName = categoryRequestDTO.CategoryName,
+                IsActive = categoryRequestDTO.IsActive
 
                 //var pizzaCategorymapping = new PizzaCategoryMapping()
                 //{
@@ -44,7 +44,15 @@ namespace SliceSync.Service.Services
 
             await _context.SaveChangesAsync();
 
-            return createdCategories.Entity;
+
+            var response = new CategoryResonseDTO()
+            {
+                CategoryType = category.CategoryType,
+                CategoryName = category.CategoryName,
+                IsActive = category.IsActive
+            };
+
+            return response;
             
         }
 
