@@ -22,10 +22,7 @@ namespace SliceSync.Infrastructure.Data
             public DbSet<Category> Categories{ get; set; }
             public DbSet<PizzaCategoryMapping> PizzaCategoryMappings{ get; set; }
 
-        public async Task ToListAsunc(Category? category)
-        {
-            throw new NotImplementedException();
-        }
+     
 
         //OnMoldeCreating -> It's a method where you tell EF Core how to set up your database tables when it can't figure it out automatically.
         protected override void OnModelCreating(ModelBuilder modelbuilder)

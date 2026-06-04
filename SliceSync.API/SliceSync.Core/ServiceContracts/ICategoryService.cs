@@ -13,7 +13,7 @@ namespace SliceSync.Core.ServiceContracts
         
         public Task<CategoryResonseDTO> AddCategory(CategoryRequestDTO categoryRequestDTO);
 
-        public Task<Category> UpdateCategory(CategoryResonseDTO categoryDTO);
+        public Task<CategoryResonseDTO> UpdateCategory(CategoryRequestDTO categoryRequestDTO);
 
         public Task<bool> DeleteCategoryById(Guid id);
          public Task<bool> DeleteAllCategories();

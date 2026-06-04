@@ -57,10 +57,10 @@ namespace SliceSync.Service.Services
         }
 
 
-        public async Task<Category> UpdateCategory(CategoryResonseDTO categoryDTO)
+        public async Task<CategoryResonseDTO> UpdateCategory(CategoryRequestDTO categoryRequestDTO)
         {
             //find in db
-            Category? category = await _context.Categories.FirstOrDefaultAsync(a => a.CategoryType == categoryDTO.CategoryType);
+            Category? category = await _context.Categories.FirstOrDefaultAsync(a => a.CategoryType == categoryRequestDTO.CategoryType);
 
             if (category == null)
             {
@@ -68,13 +68,20 @@ namespace SliceSync.Service.Services
             }
 
             //update in Category           
-            category.CategoryName = categoryDTO.CategoryName;
-            category.IsActive = categoryDTO.IsActive;
+            category.CategoryName = categoryRequestDTO.CategoryName;
+            category.IsActive = categoryRequestDTO.IsActive;
 
             _context.Update(category);
             await _context.SaveChangesAsync();
 
-            return category;
+            var response = new CategoryResonseDTO()
+            {
+                CategoryType = category.CategoryType,
+                CategoryName = category.CategoryName,
+                IsActive = category.IsActive
+            };
+
+            return response;
         }
         public async Task<bool> DeleteCategoryById(Guid id)
         {

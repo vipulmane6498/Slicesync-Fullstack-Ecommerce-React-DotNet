@@ -4,5 +4,6 @@ SliceSync is a full-stack e-commerce platform developed using ASP.NET Core Web A
 
 ERD:
 
-<img width="1090" height="761" alt="image" src="https://github.com/user-attachments/assets/43276eb0-9905-4eb0-9031-95e3f3193cad" />
+<img width="1278" height="851" alt="image" src="https://github.com/user-attachments/assets/81438091-949f-4e85-b3ef-d9ab9e9c8b9a" />
+
 
