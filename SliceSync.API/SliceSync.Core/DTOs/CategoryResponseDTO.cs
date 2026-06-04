@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace SliceSync.Core.DTOs
 {
-    public class CategoryResonseDTO
+    public class CategoryResponseDTO
     {
+        public Guid CategoryId { get; set; }
         public string? CategoryType { get; set; }
         public string? CategoryName { get; set; }
         public bool? IsActive { get; set; }
+
+        public CategoryResponseDTO? ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

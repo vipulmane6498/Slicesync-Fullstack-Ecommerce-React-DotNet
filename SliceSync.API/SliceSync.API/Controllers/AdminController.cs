@@ -52,7 +52,7 @@ namespace SliceSync.API.Controllers
         [HttpGet("getallcategories")]
         public async Task<IActionResult> GetAllCategories()
         {
-            List<Category> allCategories = await _categoryService.GetAllCategories();
+            var allCategories = await _categoryService.GetAllCategories();
 
             if (allCategories != null)
             {

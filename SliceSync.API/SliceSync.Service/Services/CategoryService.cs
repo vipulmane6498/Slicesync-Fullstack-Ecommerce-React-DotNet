@@ -23,7 +23,7 @@ namespace SliceSync.Service.Services
 
        
 
-        public async Task<CategoryResonseDTO> AddCategory(CategoryRequestDTO categoryRequestDTO)
+        public async Task<CategoryResponseDTO> AddCategory(CategoryRequestDTO categoryRequestDTO)
         {
 
             var category = new Category()
@@ -45,8 +45,9 @@ namespace SliceSync.Service.Services
             await _context.SaveChangesAsync();
 
 
-            var response = new CategoryResonseDTO()
+            var response = new CategoryResponseDTO()
             {
+                CategoryId=category.CategoryId,
                 CategoryType = category.CategoryType,
                 CategoryName = category.CategoryName,
                 IsActive = category.IsActive
@@ -57,7 +58,7 @@ namespace SliceSync.Service.Services
         }
 
 
-        public async Task<CategoryResonseDTO> UpdateCategory(CategoryRequestDTO categoryRequestDTO)
+        public async Task<CategoryResponseDTO> UpdateCategory(CategoryRequestDTO categoryRequestDTO)
         {
             //find in db
             Category? category = await _context.Categories.FirstOrDefaultAsync(a => a.CategoryType == categoryRequestDTO.CategoryType);
@@ -74,8 +75,9 @@ namespace SliceSync.Service.Services
             _context.Update(category);
             await _context.SaveChangesAsync();
 
-            var response = new CategoryResonseDTO()
+            var response = new CategoryResponseDTO()
             {
+                CategoryId=category.CategoryId,
                 CategoryType = category.CategoryType,
                 CategoryName = category.CategoryName,
                 IsActive = category.IsActive
@@ -101,9 +103,39 @@ namespace SliceSync.Service.Services
 
         }
 
-        public async Task<List<Category>> GetAllCategories()
+        public async Task<List<CategoryResponseDTO>> GetAllCategories()
         {
-           return await _context.Categories.ToListAsync();            
+            //check in db 
+           var foundAllcategories= await _context.Categories.ToListAsync();
+
+            //if categories not avail return execption
+            if(foundAllcategories == null)
+            {
+                throw new KeyNotFoundException("Categegories not available!");
+            }
+
+            //if categories avail in db then return to clientwith following steps
+
+
+            //create response list where in we will save each category 
+            List<CategoryResponseDTO> foundCatList = new List<CategoryResponseDTO>();
+
+            //traverse each category and found in DB and add in response
+            foreach(var category in foundAllcategories)
+            {
+                //create obj of DTO wherein we will add category one by one
+                var response = new CategoryResponseDTO()
+                {
+                    CategoryId = category.CategoryId,
+                    CategoryType = category.CategoryType,
+                    CategoryName = category.CategoryName,
+                    IsActive = category.IsActive
+                };
+                //eventually add in ResponseList
+                foundCatList.Add(response);
+            };
+
+            return foundCatList;
         }
 
         public async Task<Category> GetCategoryById(Guid id)

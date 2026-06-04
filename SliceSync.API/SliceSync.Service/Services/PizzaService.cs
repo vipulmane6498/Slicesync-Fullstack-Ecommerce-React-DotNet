@@ -70,7 +70,7 @@ namespace SliceSync.Service.Services
                 IsSoldOut = pizza.IsSoldOut ?? false,
                 IsActive = pizza.IsActive ?? false,
                 CreateAt = pizza.CreateAt ?? DateTime.UtcNow,
-                Categories = foundCategories.Select(c => new CategoryResonseDTO
+                Categories = foundCategories.Select(c => new CategoryResponseDTO
                 {
                     CategoryType = c.CategoryType,
                     CategoryName = c.CategoryName, // Assuming property name is CategoryName
@@ -104,12 +104,12 @@ namespace SliceSync.Service.Services
                 IsSoldOut = foundPizza.IsSoldOut ?? false,
                 IsActive = foundPizza.IsActive ?? false,
                 CreateAt = foundPizza.CreateAt ?? DateTime.UtcNow,
-                Categories = foundPizza.PizzaCategoryMappings?.Select(pcm => new CategoryResonseDTO
+                Categories = foundPizza.PizzaCategoryMappings?.Select(pcm => new CategoryResponseDTO
                 {
                     CategoryType = pcm.Category.CategoryType,
                     CategoryName = pcm.Category.CategoryName,
                     IsActive = pcm.Category.IsActive ?? false,
-                }).ToList() ?? new List<CategoryResonseDTO>()
+                }).ToList() ?? new List<CategoryResponseDTO>()
             };
 
             return response;
@@ -152,12 +152,12 @@ namespace SliceSync.Service.Services
                     IsSoldOut = pizza.IsSoldOut ?? false,
                     IsActive = pizza.IsActive ?? false,
                     CreateAt = pizza.CreateAt ?? DateTime.UtcNow,
-                    Categories = pizza.PizzaCategoryMappings?.Select(pcm => new CategoryResonseDTO
+                    Categories = pizza.PizzaCategoryMappings?.Select(pcm => new CategoryResponseDTO
                     {
                         CategoryType = pcm.Category.CategoryType,
                         CategoryName = pcm.Category.CategoryName,
                         IsActive = pcm.Category.IsActive ?? false,
-                    }).ToList() ?? new List<CategoryResonseDTO>()
+                    }).ToList() ?? new List<CategoryResponseDTO>()
                 };
                 responseList.Add(response);
             }
@@ -240,12 +240,12 @@ namespace SliceSync.Service.Services
                 IsActive = foundPizza.IsActive ?? true,
                 CreateAt = foundPizza.CreateAt ?? DateTime.UtcNow,
 
-                Categories = foundPizza.PizzaCategoryMappings?.Select(pcm => new CategoryResonseDTO
+                Categories = foundPizza.PizzaCategoryMappings?.Select(pcm => new CategoryResponseDTO
                 {
                     CategoryType = pcm.Category.CategoryType,
                     CategoryName = pcm.Category.CategoryName,
                     IsActive = pcm.Category.IsActive
-                }).ToList() ?? new List<CategoryResonseDTO>()
+                }).ToList() ?? new List<CategoryResponseDTO>()
             };
 
             return response;
