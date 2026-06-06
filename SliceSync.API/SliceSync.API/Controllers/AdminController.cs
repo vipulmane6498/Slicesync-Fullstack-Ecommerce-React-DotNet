@@ -68,7 +68,7 @@ namespace SliceSync.API.Controllers
         {
           var category= await _categoryService.GetCategoryById(id);
 
-            return Ok(category);
+          return Ok(category);
         }
 
         [HttpGet("getcategorybytype")]

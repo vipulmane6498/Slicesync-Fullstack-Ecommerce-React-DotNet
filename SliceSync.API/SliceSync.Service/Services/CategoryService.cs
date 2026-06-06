@@ -138,7 +138,7 @@ namespace SliceSync.Service.Services
             return foundCatList;
         }
 
-        public async Task<Category> GetCategoryById(Guid id)
+        public async Task<CategoryResponseDTO> GetCategoryById(Guid id)
         {
           Category? category=  await  _context.Categories.FirstOrDefaultAsync(a => a.CategoryId == id);
 
@@ -146,7 +146,15 @@ namespace SliceSync.Service.Services
             {
                 throw new Exception("Please provide some id! ");
             }
-            return category;
+
+            var response = new CategoryResponseDTO()
+            {
+                CategoryId = category.CategoryId,
+                CategoryType = category.CategoryType,
+                CategoryName = category.CategoryName,
+                IsActive = category.IsActive
+            };
+            return response;
         }
 
 
