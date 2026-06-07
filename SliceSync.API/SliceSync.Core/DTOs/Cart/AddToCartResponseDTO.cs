@@ -7,6 +7,6 @@ namespace SliceSync.Core.DTOs.Cart
         public Guid PizzaId { get; set; }
         public Guid UserId { get; set; }
         public int Quantity { get; set; }
-        public Decimal TotalCartPrice { get; set; }
+
     }
 }

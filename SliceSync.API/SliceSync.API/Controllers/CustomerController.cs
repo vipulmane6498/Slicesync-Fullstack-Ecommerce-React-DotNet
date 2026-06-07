@@ -38,11 +38,11 @@ namespace SliceSync.API.Controllers
             return Ok(await _cartService.AddToCart(requestDTO));
         }
 
-        //[HttpPost("removefromcart")]
-        //public async Task<ActionResult<AddToCartResponseDTO>> RemoveFromCart(AddToCartRequestDTO requestDTO)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-        //    return Ok(await _cartService.RemoveFromCart(requestDTO));
-        //}
+        [HttpPost("removefromcart")]
+        public async Task<ActionResult<AddToCartResponseDTO>> RemoveFromCart(AddToCartRequestDTO requestDTO)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Ok(await _cartService.RemoveFromCart(requestDTO));
+        }
     }
 }

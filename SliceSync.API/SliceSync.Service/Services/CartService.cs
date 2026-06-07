@@ -22,7 +22,7 @@ namespace SliceSync.Service.Services
 
             Pizza foundPizza = _db.Pizzas.FirstOrDefault(p => p.PizzaId == cartRequestDTO.PizzaId) ?? throw new KeyNotFoundException("Invalid pizza id");
 
-            // When cart is not found
+            //1. When cart is not found
             if (foundCart == null)
             {
                 ////creating cart
@@ -39,11 +39,11 @@ namespace SliceSync.Service.Services
                 CartItem newCartItem = new CartItem()
                 {
                     CartItemId = Guid.NewGuid(),
-                    Cart = newCart,
+                    CartId = newCart.CartId,
                     PizzaId = cartRequestDTO.PizzaId,
+                    Cart = newCart,
                     Quantity = 1,
                     PriceAtThatTime = foundPizza.Unitprice,
-                    CartId = newCart.CartId,
                 };
 
                 //newCart.CartItems.Add(newCartItem);
@@ -55,15 +55,14 @@ namespace SliceSync.Service.Services
                 return new AddToCartResponseDTO()
                 {
                     PizzaId = foundPizza.PizzaId,
-                    UserId = foundCart.UserId,
-                    Quantity = 1,
-                    TotalCartPrice=foundPizza.Unitprice
+                    UserId = cartRequestDTO.UserId,
+                    Quantity = 1
                 };
             }
 
             CartItem? foundCartItem = _db.CartItem.FirstOrDefault(c => c.CartId == foundCart.CartId && c.PizzaId == foundPizza.PizzaId);
 
-            // When cart is found but cartitem is not found
+            //2. When cart is found but cartitem is not found
             if (foundCartItem == null)
             {
                 CartItem newCartItem = new CartItem()
@@ -78,6 +77,7 @@ namespace SliceSync.Service.Services
                 };
 
                 foundCart.CartPrice += foundPizza?.Unitprice;
+                foundCart.IsActive = true;
                 foundCart.UpdatedAt = DateTime.UtcNow;
 
                 await _db.CartItem.AddAsync(newCartItem);
@@ -88,14 +88,14 @@ namespace SliceSync.Service.Services
                 {
                     PizzaId = foundPizza.PizzaId,
                     UserId = foundCart.UserId,
-                    Quantity = 1,
-                    TotalCartPrice = (decimal)foundCart.CartPrice
+                    Quantity = 1
                 };
             }
 
-            // When cart and cartitem both are found
+            //3. When cart and cartitem both are found
             foundCartItem.PriceAtThatTime = foundPizza?.Unitprice;
             foundCartItem.Quantity++;
+            foundCart.IsActive = true;
             foundCart.CartPrice += foundPizza?.Unitprice;
             foundCart.UpdatedAt = DateTime.UtcNow;
 
@@ -108,13 +108,67 @@ namespace SliceSync.Service.Services
                 PizzaId = foundPizza.PizzaId,
                 UserId = foundCart.UserId,
                 Quantity = foundCartItem.Quantity,
-                TotalCartPrice = (decimal)foundCart.CartPrice
+
             };
         }
 
-        //public async Task<AddToCartResponseDTO> RemoveFromCart(AddToCartRequestDTO request)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<AddToCartResponseDTO> RemoveFromCart(AddToCartRequestDTO cartRequestDTO)
+        {
+
+            var foundCart = _db.Carts.FirstOrDefault(c => c.UserId == cartRequestDTO.UserId);
+            var foundPizza = _db.Pizzas.FirstOrDefault(p => p.PizzaId == cartRequestDTO.PizzaId);
+
+            //1. when cart is not found
+            if (foundCart == null)
+            {
+                throw new KeyNotFoundException("Cart is not active for this user!");
+            }
+
+            //2. when cart is found but not cartItem
+            var foundCartItem = _db.CartItem.FirstOrDefault(ci => ci.CartId == foundCart.CartId && ci.PizzaId == foundPizza.PizzaId);
+
+            if (foundCartItem == null)
+            {
+                throw new KeyNotFoundException("Items not present in the cart!");
+            }
+
+
+            //3. when cart is found with cartItem
+            if (foundCartItem != null)
+            {
+                foundCartItem.Quantity--;
+                //when cart item reaches to zero
+                foundCart.CartPrice -= foundPizza.Unitprice;
+                foundCart.UpdatedAt = DateTime.UtcNow;
+
+                if (foundCartItem.Quantity == 0)
+                {
+                    foundCart.IsActive = false;
+                    _db.Carts.Update(foundCart);
+                    _db.CartItem.Remove(foundCartItem);
+                    await _db.SaveChangesAsync();
+
+                    return new AddToCartResponseDTO()
+                    {
+                        PizzaId = foundPizza.PizzaId,
+                        UserId = foundCart.UserId,
+                        Quantity = foundCartItem.Quantity,
+                    };
+                }
+            }
+
+            _db.CartItem.Update(foundCartItem);
+            _db.Carts.Update(foundCart);
+            await _db.SaveChangesAsync();
+
+            var response = new AddToCartResponseDTO()
+            {
+                PizzaId = foundPizza.PizzaId,
+                UserId = foundCart.UserId,
+                Quantity = foundCartItem.Quantity,
+            };
+
+            return response;
+        }
     }
 }
