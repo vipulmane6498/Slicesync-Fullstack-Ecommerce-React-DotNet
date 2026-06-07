@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SliceSync.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SliceSync.Infrastructure.Data;
 namespace SliceSync.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606165513_AddedCartPriceColumnInCart")]
+    partial class AddedCartPriceColumnInCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,9 +134,6 @@ namespace SliceSync.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal?>("CartPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -146,12 +146,7 @@ namespace SliceSync.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("CartId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Carts");
                 });
@@ -171,7 +166,7 @@ namespace SliceSync.Infrastructure.Migrations
                     b.Property<decimal?>("PriceAtThatTime")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quanitty")
                         .HasColumnType("int");
 
                     b.HasKey("CartItemId");
@@ -406,15 +401,6 @@ namespace SliceSync.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SliceSync.Core.Entities.Cart", b =>
-                {
-                    b.HasOne("SliceSync.Core.IdentityEntities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("SliceSync.Core.Entities.CartItem", b =>

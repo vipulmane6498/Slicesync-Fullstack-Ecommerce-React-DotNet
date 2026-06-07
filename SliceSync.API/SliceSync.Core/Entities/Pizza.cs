@@ -15,9 +15,6 @@ namespace SliceSync.Core.Entities
 
         [Column(TypeName = "decimal(10,2)")]
         public Decimal Unitprice { get; set; }
-
-   
-
         public string? Image { get; set; }
 
         public string? PizzaDesciption { get; set; }

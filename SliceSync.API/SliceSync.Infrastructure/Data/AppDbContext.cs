@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Identity.Client;
 using SliceSync.Core.Entities;
 using SliceSync.Core.IdentityEntities;
 using System;
@@ -18,11 +19,15 @@ namespace SliceSync.Infrastructure.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-            public DbSet<Pizza> Pizzas { get; set; }
-            public DbSet<Category> Categories{ get; set; }
-            public DbSet<PizzaCategoryMapping> PizzaCategoryMappings{ get; set; }
+        public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<PizzaCategoryMapping> PizzaCategoryMappings { get; set; }
 
-     
+        public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<CartItem> CartItem { get; set; }
+
+
 
         //OnMoldeCreating -> It's a method where you tell EF Core how to set up your database tables when it can't figure it out automatically.
         protected override void OnModelCreating(ModelBuilder modelbuilder)
@@ -35,7 +40,7 @@ namespace SliceSync.Infrastructure.Data
 
             //Pizza -> PizzaCategoryMapping
             modelbuilder.Entity<PizzaCategoryMapping>()
-                .HasOne(pc => pc.Pizza) 
+                .HasOne(pc => pc.Pizza)
                 .WithMany(p => p.PizzaCategoryMappings)
                 .HasForeignKey(pc => pc.PizzaId);
 
@@ -49,6 +54,20 @@ namespace SliceSync.Infrastructure.Data
             //    .Property(c => c.CategoryId)
             //    .HasDefaultValueSql("NEWID()") // ✅ SQL Server generates the Guid
             //.ValueGeneratedOnAdd();
+
+            //CartItem=> Cart
+            //We have injected Cart in cartItem Entity so do it like below
+            modelbuilder.Entity<CartItem>()
+               .HasOne(ci => ci.Cart)
+               .WithMany(c => c.CartItems)
+               .HasForeignKey(ci => ci.CartId);
+
+            //CartItem=> Pizza
+            //We have injected Pizza in cartItem Entity so do it like below
+            modelbuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Pizza)
+                .WithMany()
+                .HasForeignKey(ci => ci.PizzaId);
         }
     }
 }

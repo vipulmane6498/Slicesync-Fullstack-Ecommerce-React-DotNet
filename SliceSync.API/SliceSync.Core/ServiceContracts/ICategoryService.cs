@@ -18,6 +18,8 @@ namespace SliceSync.Core.ServiceContracts
         public Task<bool> DeleteCategoryById(Guid id);
          public Task<bool> DeleteAllCategories();
 
+
+        //below 3 remained
         public Task<List<CategoryResponseDTO>> GetAllCategories();
 
         public Task<Category> GetCategoryById(Guid id);

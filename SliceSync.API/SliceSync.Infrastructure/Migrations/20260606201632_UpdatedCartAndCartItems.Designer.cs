@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SliceSync.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SliceSync.Infrastructure.Data;
 namespace SliceSync.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606201632_UpdatedCartAndCartItems")]
+    partial class UpdatedCartAndCartItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +174,7 @@ namespace SliceSync.Infrastructure.Migrations
                     b.Property<decimal?>("PriceAtThatTime")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int?>("Quanitty")
                         .HasColumnType("int");
 
                     b.HasKey("CartItemId");

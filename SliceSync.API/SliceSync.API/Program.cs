@@ -38,6 +38,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IPizzaService, PizzaService>();
+builder.Services.AddTransient<ICartService, CartService>();
 
 var app = builder.Build();
 
