@@ -1,4 +1,6 @@
 ﻿using SliceSync.Core.DTOs.Cart;
+using SliceSync.Core.DTOs.Order;
+using SliceSync.Core.DTOs.OrderItem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,7 @@ namespace SliceSync.Core.ServiceContracts
     {
         public Task<AddToCartResponseDTO> AddToCart(AddToCartRequestDTO cartRequestDTO);
         Task<AddToCartResponseDTO> RemoveFromCart(AddToCartRequestDTO request);
+
+        public Task<OrderResponseDTO> CheckOut(OrderRequestDTO orderRequestDTO);
     }
 }

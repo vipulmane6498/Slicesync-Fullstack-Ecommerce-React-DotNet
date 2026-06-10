@@ -1,5 +1,10 @@
-﻿using SliceSync.Core.DTOs.Cart;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
+using SliceSync.Core.DTOs.Cart;
+using SliceSync.Core.DTOs.Order;
+using SliceSync.Core.DTOs.OrderItem;
 using SliceSync.Core.Entities;
+using SliceSync.Core.Enums;
 using SliceSync.Core.ServiceContracts;
 using SliceSync.Infrastructure.Data;
 
@@ -41,6 +46,7 @@ namespace SliceSync.Service.Services
                     CartItemId = Guid.NewGuid(),
                     CartId = newCart.CartId,
                     PizzaId = cartRequestDTO.PizzaId,
+                    PizzaName=foundPizza.PizzaName,
                     Cart = newCart,
                     Quantity = 1,
                     PriceAtThatTime = foundPizza.Unitprice,
@@ -55,14 +61,15 @@ namespace SliceSync.Service.Services
                 return new AddToCartResponseDTO()
                 {
                     PizzaId = foundPizza.PizzaId,
+                    PizzaName=foundPizza.PizzaName,
                     UserId = cartRequestDTO.UserId,
                     Quantity = 1
                 };
             }
 
+            //2. When cart is found but cartitem is not found
             CartItem? foundCartItem = _db.CartItem.FirstOrDefault(c => c.CartId == foundCart.CartId && c.PizzaId == foundPizza.PizzaId);
 
-            //2. When cart is found but cartitem is not found
             if (foundCartItem == null)
             {
                 CartItem newCartItem = new CartItem()
@@ -70,6 +77,7 @@ namespace SliceSync.Service.Services
                     CartItemId = Guid.NewGuid(),
                     CartId = foundCart.CartId,
                     PizzaId = foundPizza.PizzaId,
+                    PizzaName= foundPizza.PizzaName,
                     Quantity = 1,
                     PriceAtThatTime = foundPizza.Unitprice,
                     Cart = foundCart,
@@ -87,6 +95,7 @@ namespace SliceSync.Service.Services
                 return new AddToCartResponseDTO()
                 {
                     PizzaId = foundPizza.PizzaId,
+                    PizzaName= foundPizza.PizzaName,
                     UserId = foundCart.UserId,
                     Quantity = 1
                 };
@@ -106,11 +115,13 @@ namespace SliceSync.Service.Services
             return new AddToCartResponseDTO()
             {
                 PizzaId = foundPizza.PizzaId,
+                PizzaName = foundPizza.PizzaName,
                 UserId = foundCart.UserId,
                 Quantity = foundCartItem.Quantity,
 
             };
         }
+
 
         public async Task<AddToCartResponseDTO> RemoveFromCart(AddToCartRequestDTO cartRequestDTO)
         {
@@ -143,14 +154,15 @@ namespace SliceSync.Service.Services
 
                 if (foundCartItem.Quantity == 0)
                 {
-                    foundCart.IsActive = false;
-                    _db.Carts.Update(foundCart);
                     _db.CartItem.Remove(foundCartItem);
+                    _db.Carts.Remove(foundCart);
+                    foundCart.IsActive = false;
                     await _db.SaveChangesAsync();
 
                     return new AddToCartResponseDTO()
                     {
                         PizzaId = foundPizza.PizzaId,
+                        PizzaName  = foundPizza.PizzaName,
                         UserId = foundCart.UserId,
                         Quantity = foundCartItem.Quantity,
                     };
@@ -164,11 +176,99 @@ namespace SliceSync.Service.Services
             var response = new AddToCartResponseDTO()
             {
                 PizzaId = foundPizza.PizzaId,
+                PizzaName = foundPizza.PizzaName,
                 UserId = foundCart.UserId,
                 Quantity = foundCartItem.Quantity,
             };
 
             return response;
+        }
+
+        public async Task<OrderResponseDTO> CheckOut(OrderRequestDTO orderRequestDTO)
+        {
+            //1. find cart->cartItems->pizza and userid check if avail in db
+            var foundCart = await _db.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Pizza).
+                FirstOrDefaultAsync(c => c.UserId == orderRequestDTO.UserId
+                                        && c.CartId == orderRequestDTO.CartId);
+
+            if (foundCart == null)
+            {
+                throw new KeyNotFoundException("Cart not found!");
+            }
+
+            //2. now validate pizza in db
+            var foundPizza = new List<Pizza>();
+            foreach (var item in foundCart.CartItems)
+            {
+                var pizza = await _db.Pizzas.FirstOrDefaultAsync(p => p.PizzaId == item.PizzaId);
+                if (pizza == null)
+                {
+                    throw new KeyNotFoundException($"Pizza with id {item.PizzaId} no longer exists!");
+                }
+                foundPizza.Add(pizza);
+            }
+
+            if (foundPizza == null)
+            {
+                throw new KeyNotFoundException("Pizza not exists");
+            }
+
+            //3. if foundCart and FoundPizza is exist then create order
+
+            var orderCreated = new Order()
+            {
+                OrderId = Guid.NewGuid(),
+                UserId = orderRequestDTO.UserId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
+                OrderStatus = OrderStatus.OrderConfirmed,
+                TotalOrderPrice = foundCart.CartPrice
+
+            };
+            var orderItem = foundCart.CartItems.Select(item => new OrderItem()
+            {
+                OrderItemId = Guid.NewGuid(),
+                OrderId = orderCreated.OrderId,
+                Order = orderCreated,
+                PizzaId = item.PizzaId,
+                PizzaName=item.PizzaName,
+                Quantity = item.Quantity,
+                PriceAtThatTime = foundPizza.FirstOrDefault(p => p.PizzaId == item.PizzaId).Unitprice
+            }).ToList();
+
+
+            await _db.Orders.AddAsync(orderCreated);
+            await _db.OrderItem.AddRangeAsync(orderItem);
+            await _db.SaveChangesAsync();
+
+            //4. once the order placed erase the cart and cartItem
+            _db.CartItem.RemoveRange(foundCart.CartItems);
+            foundCart.IsActive = false;
+            foundCart.CartPrice = 0;
+            _db.Carts.Remove(foundCart);
+            await _db.SaveChangesAsync();
+
+
+            //return resonse to client
+            var response = new OrderResponseDTO()
+            {
+                OrderId = orderCreated.OrderId,
+                UserId = orderRequestDTO.UserId,
+                OrderPlacedAt = DateTime.UtcNow,
+                OrderStatus = (OrderStatus)orderCreated.OrderStatus,
+                OrderPrice = orderCreated.TotalOrderPrice,
+                OrderItems = orderItem.Select(oi => new OrderItemResonseDTO()
+                {
+                    PizzaId = oi.PizzaId,
+                    PizzaName = oi.PizzaName,
+                    Quantity = oi.Quantity,
+                    ItemPrice = oi.PriceAtThatTime
+                }).ToList()
+            };
+            return response;
+
         }
     }
 }

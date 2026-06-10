@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SliceSync.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SliceSync.Infrastructure.Data;
 namespace SliceSync.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608110136_AddOrderAndOrderItemTables")]
+    partial class AddOrderAndOrderItemTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,9 +171,6 @@ namespace SliceSync.Infrastructure.Migrations
                     b.Property<Guid>("PizzaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PizzaName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal?>("PriceAtThatTime")
                         .HasColumnType("decimal(18,2)");
 
@@ -245,9 +245,6 @@ namespace SliceSync.Infrastructure.Migrations
 
                     b.Property<Guid>("PizzaId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PizzaName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PriceAtThatTime")
                         .HasColumnType("decimal(18,2)");

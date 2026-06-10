@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SliceSync.Core.DTOs;
 using SliceSync.Core.DTOs.Cart;
+using SliceSync.Core.DTOs.Order;
 using SliceSync.Core.ServiceContracts;
 
 namespace SliceSync.API.Controllers
@@ -43,6 +44,14 @@ namespace SliceSync.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await _cartService.RemoveFromCart(requestDTO));
+        }
+
+        [HttpPost("checkout")]
+        public async Task<ActionResult<OrderResponseDTO>> CheckOut(OrderRequestDTO orderRequestDTO)
+        {
+          var OrderPlaced= await _cartService.CheckOut(orderRequestDTO);
+
+            return Ok(OrderPlaced);
         }
     }
 }

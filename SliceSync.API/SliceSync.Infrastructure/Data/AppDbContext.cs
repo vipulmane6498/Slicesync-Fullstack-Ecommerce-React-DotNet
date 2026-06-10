@@ -22,10 +22,12 @@ namespace SliceSync.Infrastructure.Data
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<PizzaCategoryMapping> PizzaCategoryMappings { get; set; }
-
         public DbSet<Cart> Carts { get; set; }
-
         public DbSet<CartItem> CartItem { get; set; }
+        
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItem { get; set; }
 
 
 
@@ -66,8 +68,22 @@ namespace SliceSync.Infrastructure.Data
             //We have injected Pizza in cartItem Entity so do it like below
             modelbuilder.Entity<CartItem>()
                 .HasOne(ci => ci.Pizza)
-                .WithMany()
+                .WithMany() //We did not inject CartItems in Pizza
                 .HasForeignKey(ci => ci.PizzaId);
+
+            //OrderItem=> Order
+            //We have injected Order in OrderItems Entity so do it like below
+            modelbuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId);
+
+            //OrderItem=> Pizza
+            //We have injected Pizza in OrderItem Entity so do it like below
+            modelbuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Pizza)
+                .WithMany() //We did not inject OrderItems in Pizza
+                .HasForeignKey(oi => oi.PizzaId);
         }
     }
 }

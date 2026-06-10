@@ -5,6 +5,7 @@ namespace SliceSync.Core.DTOs.Cart
     public class AddToCartResponseDTO
     {
         public Guid PizzaId { get; set; }
+        public string? PizzaName { get; set; }
         public Guid UserId { get; set; }
         public int Quantity { get; set; }
 

@@ -16,7 +16,7 @@ namespace SliceSync.Core.Entities
         public bool? IsActive { get; set; } = false;
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<CartItem> CartItems { get; set; }
+        public List<CartItem>? CartItems { get; set; }
 
         //when there is no items in the cart it should show Zero(0) cart amount bydefault
         public Decimal? CartPrice { get; set; } = 0;
