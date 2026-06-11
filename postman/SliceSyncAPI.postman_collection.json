@@ -1,0 +1,623 @@
+{
+  "info": {
+    "_postman_id": "a12663a5-a092-4fb0-a89d-5935da448715",
+    "name": "SliceSyncAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25461843",
+    "_collection_link": "https://go.postman.co/collection/25461843-a12663a5-a092-4fb0-a89d-5935da448715?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "UserRegistration",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n        \"fullName\": \"abc\",\r\n        \"email\": \"abc@gmail.com\",\r\n        \"password\": \"Abc@123\",\r\n        \"phoneNumber\": \"3141326232\",\r\n        \"userTypeOptions\": \"Admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Auth/register",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UserLogin",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    //Admin\r\n//     \"email\": \"abc@gmail.com\",\r\n// \"password\": \"Abc@123\"\r\n\r\n//Customer\r\n     \"email\": \"efg@gmail.com\",\r\n        \"password\": \"Efg@123\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Auth/login",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Auth/logout",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "generate-new-jwt-token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YmQyYmVhNi0wZDI0LTQ2YTMtNDAyMy0wOGRlYjQwNDIyN2MiLCJqdGkiOiJhZTJkYzhkZS0xMjVhLTRkZTAtODY5MS1kMWIwMTI5NTk4YmYiLCJpYXQiOiIxNzc5Mzg1OTg4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiUGlycXZAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IlBpYXJxaiIsImV4cCI6MTc3OTM4NjA0OCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA5NCIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTQifQ.4kJWc93A75prO9HJXk-aDbyXSTnSzyAyVW1W7o8GZfI\",\r\n    \"RefreshToken\":\"x4uOWCKWDeuZi7yDeZQMXLVoIjumJhjUqyM58bw/wNfGF+KpYgVlS4fDS9dlC6Qx4hlc1zX7gLoQ2ZwaKdeLbQ==\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Auth/generate-new-jwt-token",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Auth",
+                "generate-new-jwt-token"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Admin/addcategory",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"CategoryType\": \"Type\",\r\n    \"CategoryName\": \"Veg\",\r\n    \"IsActive\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/addcategory",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "addcategory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/editcategory",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"CategoryType\": \"Size\",\r\n    \"CategoryName\": \"Medium\",\r\n    \"IsActive\": false    \r\n}   ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/editcategory",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "editcategory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/removecategorybyid",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/removecategorybyid?id=580E8072-C1E2-4321-BDB1-24B230A51968",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "removecategorybyid"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "580E8072-C1E2-4321-BDB1-24B230A51968"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/getallcategories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/getallcategories",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "getallcategories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/removeallcategories",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/removeallcategories",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "removeallcategories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/getcategorybyid",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/getcategorybyid?id=36658DE8-41E5-4514-BE86-4878034F1CD5",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "getcategorybyid"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "36658DE8-41E5-4514-BE86-4878034F1CD5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/getcategorybytype",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"CategoryType\": \"Size\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/getcategorybytype",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "getcategorybytype"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/addpizza",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"PizzaName\": \"Garlic Pizza\",\r\n    \"Unitprice\": 220,\r\n    \"ImageUrl\":\"https://ooni.com/cdn/shop/articles/20220211142347-…f35-8094-2067ab41a671.jpg?v=1737104576&width=2048\",\r\n    \"PizzaDesciption\": \"a thick, bubbly crust topped with a minimalist combination of crushed tomato sauce, capsicum and a drizzle of extra virgin olive oil\",\r\n    \"IsSoldOut\": false,\r\n    \"IsActive\":true,\r\n    \"CategoryId\":[\r\n        \"7333EB8C-ED4F-43F4-AF1A-4F1B559B74CC\",\r\n        \"104B9F2F-6A6C-4547-8EEF-BEF5FB3E392B\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/addpizza",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "addpizza"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/getpizzabyid",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/getpizzabyid?id=2D5DD61F-2001-4FE3-8705-0AD778941A22",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "getpizzabyid"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "2D5DD61F-2001-4FE3-8705-0AD778941A22"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/getallpizza",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/getallpizza",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "getallpizza"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/deleteallpizza",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/deleteallpizza",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "deleteallpizza"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin/updatepizza",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n   {\r\n    \"PizzaName\": \"Capsicum Pizza\",\r\n        \"Unitprice\": 500,\r\n        \"ImageUrl\":\"https://ooni.com/cdn/shop/articles/20220211142347-…f35-8094-2067ab41a671.jpg?v=1737104576&width=2048\",\r\n        \"PizzaDesciption\": \"a thin\",\r\n        \"IsSoldOut\": false,\r\n        \"IsActive\":true,\r\n        \"CategoryId\":[\r\n           \"7DE1B583-D8EE-48D4-B881-5B5C4939E5FC\",\r\n           \"13736BD9-4BBA-4DB8-8753-C6173118BC9E\"\r\n        ]\r\n   }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Admin/updatepizza?id=B0FEDBCD-DEF3-49A4-9D30-0C00069A5355",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Admin",
+                "updatepizza"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "B0FEDBCD-DEF3-49A4-9D30-0C00069A5355"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Customer/AddToCart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhN2QwMzQwMS0yN2YwLTRkZGEtMDhjYy0wOGRlYzEzZWMzZWUiLCJqdGkiOiIzZTIyNTkwOS0wMjNmLTQyNGMtYWUyNi0wMTliYjc0M2Q2YTciLCJpYXQiOiIxNzgwNzc3ODY3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiZWZnQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJlZmciLCJleHAiOjE3ODA3NzkwNjcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDk0In0.QyesGzUm7cREHNiPwVq2fAJ72GZVvH0S93bWrbGpl5I",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userId\": \"a7d03401-27f0-4dda-08cc-08dec13ec3ee\",\r\n  \"pizzaId\": \"b0fedbcd-def3-49a4-9d30-0c00069a5355\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:5242/api/Customer/addtocart",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "5242",
+              "path": [
+                "api",
+                "Customer",
+                "addtocart"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customer/removefromcart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "https://localhost:7094/api/Customer/removefromcart",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userId\": \"a7d03401-27f0-4dda-08cc-08dec13ec3ee\",\r\n  \"pizzaId\": \"b0fedbcd-def3-49a4-9d30-0c00069a5355\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Customer/removefromcart",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Customer",
+                "removefromcart"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customer/checkout",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"userId\": \"a7d03401-27f0-4dda-08cc-08dec13ec3ee\",\r\n  \"CartId\": \"0A820E5F-8F2F-4600-831C-F1F5AD2F6383\" //After every checkout cartId and cartItemsIds gets deleted hence when you add 1st new item in cart its cartId gets created use that. \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Customer/checkout",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Customer",
+                "checkout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customer/getallpizza",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhN2QwMzQwMS0yN2YwLTRkZGEtMDhjYy0wOGRlYzEzZWMzZWUiLCJqdGkiOiIzZTIyNTkwOS0wMjNmLTQyNGMtYWUyNi0wMTliYjc0M2Q2YTciLCJpYXQiOiIxNzgwNzc3ODY3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiZWZnQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJlZmciLCJleHAiOjE3ODA3NzkwNjcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDk0In0.QyesGzUm7cREHNiPwVq2fAJ72GZVvH0S93bWrbGpl5I",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7094/api/Customer/pizzas",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7094",
+          "path": [
+            "api",
+            "Customer",
+            "pizzas"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
