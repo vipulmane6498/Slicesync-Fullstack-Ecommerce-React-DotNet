@@ -257,7 +257,7 @@ namespace SliceSync.Service.Services
                 OrderId = orderCreated.OrderId,
                 UserId = orderRequestDTO.UserId,
                 OrderPlacedAt = DateTime.UtcNow,
-                OrderStatus = (OrderStatus)orderCreated.OrderStatus,
+                OrderStatus = orderCreated.OrderStatus,
                 OrderPrice = orderCreated.TotalOrderPrice,
                 OrderItems = orderItem.Select(oi => new OrderItemResonseDTO()
                 {

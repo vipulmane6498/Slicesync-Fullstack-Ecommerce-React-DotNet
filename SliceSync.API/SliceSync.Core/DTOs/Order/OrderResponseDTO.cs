@@ -13,7 +13,7 @@ namespace SliceSync.Core.DTOs.Order
         public Guid OrderId {  get; set; }
         public Guid UserId { get; set; }
         public DateTime? OrderPlacedAt { get; set; }
-        public OrderStatus OrderStatus { get; set; }
+        public OrderStatus? OrderStatus { get; set; }
         public List<OrderItemResonseDTO>? OrderItems { get; set; }
 
         public Decimal? OrderPrice { get; set; }

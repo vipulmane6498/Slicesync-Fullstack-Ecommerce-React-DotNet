@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SliceSync.API.Middlewares;
@@ -6,6 +6,7 @@ using SliceSync.Core.IdentityEntities;
 using SliceSync.Core.ServiceContracts;
 using SliceSync.Infrastructure.Data;
 using SliceSync.Service.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,12 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 
 //Controller
 builder.Services.AddControllers();
+//convert enum to string
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // ✅
+    });
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IPizzaService, PizzaService>();

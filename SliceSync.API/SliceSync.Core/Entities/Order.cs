@@ -18,6 +18,9 @@ namespace SliceSync.Core.Entities
         public Guid OrderId { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+
+
+        [Column(TypeName = "nvarchar(50)")]
         public OrderStatus? OrderStatus { get; set; }
 
         public List<OrderItem>? OrderItems { get; set; }
