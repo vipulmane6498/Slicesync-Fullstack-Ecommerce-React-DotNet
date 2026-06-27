@@ -24,10 +24,11 @@ namespace SliceSync.Infrastructure.Data
         public DbSet<PizzaCategoryMapping> PizzaCategoryMappings { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItem { get; set; }
-        
+
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<OrderStatusHistory> OrderStatusHistories { get; set; }
 
 
 
@@ -36,6 +37,7 @@ namespace SliceSync.Infrastructure.Data
         {
             base.OnModelCreating(modelbuilder);
 
+            //1. PizzaCategoryMapping----------
             //PizzaCategoryMapping =>  Composite Primary Key (PizzaId + CategoryId together)
             modelbuilder.Entity<PizzaCategoryMapping>()
                 .HasKey(pc => new { pc.PizzaId, pc.CategoryId });
@@ -52,12 +54,9 @@ namespace SliceSync.Infrastructure.Data
                 .WithMany(c => c.pizzaCategoryMapping)
                 .HasForeignKey(pc => pc.CategoryId);
 
-            //modelbuilder.Entity<Category>()
-            //    .Property(c => c.CategoryId)
-            //    .HasDefaultValueSql("NEWID()") // ✅ SQL Server generates the Guid
-            //.ValueGeneratedOnAdd();
 
-            //CartItem=> Cart
+            //2. CartItem----------
+            //CartItem=> Cart 
             //We have injected Cart in cartItem Entity so do it like below
             modelbuilder.Entity<CartItem>()
                .HasOne(ci => ci.Cart)
@@ -71,6 +70,7 @@ namespace SliceSync.Infrastructure.Data
                 .WithMany() //We did not inject CartItems in Pizza
                 .HasForeignKey(ci => ci.PizzaId);
 
+            //3. OrderItem----------
             //OrderItem=> Order
             //We have injected Order in OrderItems Entity so do it like below
             modelbuilder.Entity<OrderItem>()
@@ -84,6 +84,31 @@ namespace SliceSync.Infrastructure.Data
                 .HasOne(oi => oi.Pizza)
                 .WithMany() //We did not inject OrderItems in Pizza
                 .HasForeignKey(oi => oi.PizzaId);
+
+            //4. Order----------
+            //Order=>Application
+            modelbuilder.Entity<Order>()
+                .HasOne(o => o.ApplicationUser)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId);
+
+            //5. OrderStatusHistory----------
+            //OrderStatusHistory -> order
+            modelbuilder.Entity<OrderStatusHistory>()
+                .HasOne(osh => osh.Order)
+                .WithMany(o => o.orderStatusHistories)
+                .HasForeignKey(osh => osh.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //OrderStatusHistory => ApplicationUser
+            modelbuilder.Entity<OrderStatusHistory>()
+                .HasOne(osh => osh.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(osh => osh.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+
         }
     }
 }

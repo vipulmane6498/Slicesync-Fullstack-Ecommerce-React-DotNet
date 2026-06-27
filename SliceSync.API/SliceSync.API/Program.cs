@@ -36,6 +36,7 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 
 //Controller
 builder.Services.AddControllers();
+
 //convert enum to string
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -46,6 +47,7 @@ builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IPizzaService, PizzaService>();
 builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddTransient<IOrderStatusService, OrderStatusService>();
 
 var app = builder.Build();
 

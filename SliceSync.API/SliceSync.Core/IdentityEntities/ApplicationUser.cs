@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SliceSync.Core.Entities;
 
 namespace SliceSync.Core.IdentityEntities
 {
@@ -11,5 +12,7 @@ namespace SliceSync.Core.IdentityEntities
         public string? JwtRefreshToken { get; set; }
 
         public DateTime? JwtRefreshTokenExpirationDateTime { get; set; }
+
+        public List<Order>? Orders   { get; set; }
     }
 }

@@ -16,18 +16,20 @@ namespace SliceSync.API.Controllers
 
         private readonly IPizzaService _pizzaService;
         private readonly ICartService _cartService;
+        private readonly IOrderStatusService _orderStatusService;
 
-        public CustomerController(IPizzaService pizzaService, ICartService cartService)
+        public CustomerController(IPizzaService pizzaService, ICartService cartService, IOrderStatusService orderStatusService)
         {
             _pizzaService = pizzaService;
             _cartService = cartService;
+            _orderStatusService = orderStatusService;
         }
 
 
         [HttpGet("pizzas")]
         public async Task<IActionResult> GetllPizza()
         {
-           var allPizzas=await _pizzaService.GetllAllPizzas();
+            var allPizzas = await _pizzaService.GetllAllPizzas();
 
             return Ok(allPizzas);
         }
@@ -35,7 +37,7 @@ namespace SliceSync.API.Controllers
         [HttpPost("addtocart")]
         public async Task<ActionResult<AddToCartResponseDTO>> AddToCart(AddToCartRequestDTO requestDTO)
         {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await _cartService.AddToCart(requestDTO));
         }
 
@@ -49,9 +51,21 @@ namespace SliceSync.API.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<OrderResponseDTO>> CheckOut(OrderRequestDTO orderRequestDTO)
         {
-          var OrderPlaced= await _cartService.CheckOut(orderRequestDTO);
+            var OrderPlaced = await _cartService.CheckOut(orderRequestDTO);
 
             return Ok(OrderPlaced);
+        }
+
+        [HttpPatch("cancelorder")]
+        public async Task<ActionResult<OrderStatusUpdateResponseDTO>> CancelOrder(OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
+        {
+            if (orderStatusUpdateRequestDTO == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var CancelledOrder = await _orderStatusService.CancelOrder(orderStatusUpdateRequestDTO);
+            return Ok(CancelledOrder);
+
         }
     }
 }

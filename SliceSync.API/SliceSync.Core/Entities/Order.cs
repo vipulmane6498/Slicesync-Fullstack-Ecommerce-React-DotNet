@@ -24,6 +24,7 @@ namespace SliceSync.Core.Entities
         public OrderStatus? OrderStatus { get; set; }
 
         public List<OrderItem>? OrderItems { get; set; }
+        public List<OrderStatusHistory>? orderStatusHistories { get; set; }
 
         public Decimal? TotalOrderPrice { get; set; }
         
