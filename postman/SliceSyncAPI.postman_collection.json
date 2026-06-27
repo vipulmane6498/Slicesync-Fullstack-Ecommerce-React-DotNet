@@ -585,39 +585,72 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Customer/getallpizza",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhN2QwMzQwMS0yN2YwLTRkZGEtMDhjYy0wOGRlYzEzZWMzZWUiLCJqdGkiOiIzZTIyNTkwOS0wMjNmLTQyNGMtYWUyNi0wMTliYjc0M2Q2YTciLCJpYXQiOiIxNzgwNzc3ODY3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiZWZnQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJlZmciLCJleHAiOjE3ODA3NzkwNjcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDk0In0.QyesGzUm7cREHNiPwVq2fAJ72GZVvH0S93bWrbGpl5I",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://localhost:7094/api/Customer/pizzas",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Customer",
+                "pizzas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customer/cancelorder",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"UserId\": \"A7D03401-27F0-4DDA-08CC-08DEC13EC3EE\",\r\n    \"OrderId\": \"6DAA641B-ED93-47C5-9F18-3231960D944F\",\r\n    \"OrderStatusChangedTo\": \"Cancelled\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Customer/cancelorder",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Customer",
+                "cancelorder"
+              ]
+            }
+          },
+          "response": []
         }
       ]
-    },
-    {
-      "name": "Customer/getallpizza",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhN2QwMzQwMS0yN2YwLTRkZGEtMDhjYy0wOGRlYzEzZWMzZWUiLCJqdGkiOiIzZTIyNTkwOS0wMjNmLTQyNGMtYWUyNi0wMTliYjc0M2Q2YTciLCJpYXQiOiIxNzgwNzc3ODY3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiZWZnQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJlZmciLCJleHAiOjE3ODA3NzkwNjcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDk0In0.QyesGzUm7cREHNiPwVq2fAJ72GZVvH0S93bWrbGpl5I",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "https://localhost:7094/api/Customer/pizzas",
-          "protocol": "https",
-          "host": [
-            "localhost"
-          ],
-          "port": "7094",
-          "path": [
-            "api",
-            "Customer",
-            "pizzas"
-          ]
-        }
-      },
-      "response": []
     }
   ]
 }
