@@ -46,7 +46,7 @@ namespace SliceSync.Service.Services
                     CartItemId = Guid.NewGuid(),
                     CartId = newCart.CartId,
                     PizzaId = cartRequestDTO.PizzaId,
-                    PizzaName=foundPizza.PizzaName,
+                    PizzaName = foundPizza.PizzaName,
                     Cart = newCart,
                     Quantity = 1,
                     PriceAtThatTime = foundPizza.Unitprice,
@@ -61,7 +61,7 @@ namespace SliceSync.Service.Services
                 return new AddToCartResponseDTO()
                 {
                     PizzaId = foundPizza.PizzaId,
-                    PizzaName=foundPizza.PizzaName,
+                    PizzaName = foundPizza.PizzaName,
                     UserId = cartRequestDTO.UserId,
                     Quantity = 1
                 };
@@ -77,7 +77,7 @@ namespace SliceSync.Service.Services
                     CartItemId = Guid.NewGuid(),
                     CartId = foundCart.CartId,
                     PizzaId = foundPizza.PizzaId,
-                    PizzaName= foundPizza.PizzaName,
+                    PizzaName = foundPizza.PizzaName,
                     Quantity = 1,
                     PriceAtThatTime = foundPizza.Unitprice,
                     Cart = foundCart,
@@ -95,7 +95,7 @@ namespace SliceSync.Service.Services
                 return new AddToCartResponseDTO()
                 {
                     PizzaId = foundPizza.PizzaId,
-                    PizzaName= foundPizza.PizzaName,
+                    PizzaName = foundPizza.PizzaName,
                     UserId = foundCart.UserId,
                     Quantity = 1
                 };
@@ -162,7 +162,7 @@ namespace SliceSync.Service.Services
                     return new AddToCartResponseDTO()
                     {
                         PizzaId = foundPizza.PizzaId,
-                        PizzaName  = foundPizza.PizzaName,
+                        PizzaName = foundPizza.PizzaName,
                         UserId = foundCart.UserId,
                         Quantity = foundCartItem.Quantity,
                     };
@@ -233,7 +233,7 @@ namespace SliceSync.Service.Services
                 OrderId = orderCreated.OrderId,
                 Order = orderCreated,
                 PizzaId = item.PizzaId,
-                PizzaName=item.PizzaName,
+                PizzaName = item.PizzaName,
                 Quantity = item.Quantity,
                 PriceAtThatTime = foundPizza.FirstOrDefault(p => p.PizzaId == item.PizzaId).Unitprice
             }).ToList();
@@ -250,6 +250,31 @@ namespace SliceSync.Service.Services
             _db.Carts.Remove(foundCart);
             await _db.SaveChangesAsync();
 
+            //Get User Role
+            var foundUser = await _db.UserRoles.FirstOrDefaultAsync(u => u.UserId == orderRequestDTO.UserId);
+            var UserRoleId = foundUser?.RoleId;
+
+            var foundUserRoleId = await _db.Roles.FirstOrDefaultAsync(r => r.Id == UserRoleId);
+
+            var UserRoleName = "";
+            if (UserRoleId != null)
+            {
+                UserRoleName = foundUserRoleId?.Name;
+            }
+
+            //add placed order in OrderStatusHistory table
+            OrderStatusHistory orderStatusHistory = new OrderStatusHistory()
+            {
+                OrderStatusHistoryId = Guid.NewGuid(),
+                OrderId = orderCreated.OrderId,
+                OrderStatus = orderCreated.OrderStatus.ToString(),
+                UserId = orderCreated.UserId,
+                Role = UserRoleName,
+                Note = "Order Placed Successfully!",
+                CreatedAt = DateTime.UtcNow,
+            };
+            await _db.OrderStatusHistories.AddAsync(orderStatusHistory);
+            await _db.SaveChangesAsync();
 
             //return resonse to client
             var response = new OrderResponseDTO()
