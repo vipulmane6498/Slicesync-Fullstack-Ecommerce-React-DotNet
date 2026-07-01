@@ -56,6 +56,8 @@ namespace SliceSync.API.Controllers
             return Ok(OrderPlaced);
         }
 
+
+        //cancel order => Happens before the order is shipped/delivered
         [HttpPatch("cancelorder")]
         public async Task<ActionResult<OrderStatusUpdateResponseDTO>> CancelOrder(OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
         {
@@ -65,6 +67,19 @@ namespace SliceSync.API.Controllers
             }
             var CancelledOrder = await _orderStatusService.CancelOrder(orderStatusUpdateRequestDTO);
             return Ok(CancelledOrder);
+
+        }
+
+        //Return order => Happens after the order is delivered
+        [HttpPatch("returnorder")]
+        public async Task<ActionResult<OrderStatusUpdateResponseDTO>> ReturnOrder(OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
+        {
+            if (orderStatusUpdateRequestDTO == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var ReturnedOrder = await _orderStatusService.ReturnOrder(orderStatusUpdateRequestDTO);
+            return Ok(ReturnedOrder);
 
         }
     }

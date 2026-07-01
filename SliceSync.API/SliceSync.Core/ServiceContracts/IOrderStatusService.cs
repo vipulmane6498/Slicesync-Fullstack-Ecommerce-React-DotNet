@@ -14,6 +14,6 @@ namespace SliceSync.Core.ServiceContracts
         public Task<OrderStatusUpdateResponseDTO> CancelOrder(OrderStatusUpdateRequestDTO orderStatusRequestDTO);
 
         //Admin
-        public Task<OrderStatusUpdateResponseDTO> UpdateOrderStatus(OrderStatusUpdateRequestDTO orderStatusRequestDTO);
+        public Task<OrderStatusUpdateResponseDTO> ReturnOrder(OrderStatusUpdateRequestDTO orderStatusRequestDTO);
     }
 }

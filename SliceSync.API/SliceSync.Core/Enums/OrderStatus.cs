@@ -8,6 +8,6 @@ namespace SliceSync.Core.Enums
 {
     public enum OrderStatus
     {
-        Pending, OrderConfirmed, Preparing, OutForDelivery, Delivered, Cancelled
+        Pending, OrderConfirmed, Preparing, OutForDelivery, Delivered, Cancelled, Returned
     }
 }
