@@ -649,6 +649,39 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Customer/returnorder",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"UserId\": \"A7D03401-27F0-4DDA-08CC-08DEC13EC3EE\",\r\n    \"OrderId\": \"69DE3ACD-5C97-4435-88B9-5CDE963EDD8D\",\r\n    \"OrderStatusChangedTo\": \"Returned\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7094/api/Customer/returnorder",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7094",
+              "path": [
+                "api",
+                "Customer",
+                "returnorder"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     }
