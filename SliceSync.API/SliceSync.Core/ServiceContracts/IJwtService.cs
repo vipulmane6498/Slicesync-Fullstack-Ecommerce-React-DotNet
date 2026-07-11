@@ -11,7 +11,7 @@ namespace SliceSync.Core.ServiceContracts
 {
     public interface IJwtService
     {
-        AuthenticationResponseDTO CreateJwtToken(ApplicationUser applicationUser);
+        Task<AuthenticationResponseDTO> CreateJwtToken(ApplicationUser applicationUser);
 
 
         //This method extract the user details from supplied token

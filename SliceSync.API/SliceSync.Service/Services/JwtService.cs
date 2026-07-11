@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SliceSync.Core.DTOs;
 using SliceSync.Core.IdentityEntities;
@@ -23,18 +24,20 @@ namespace SliceSync.Service.Services
         // Jwt Issuer
         // Token Expiration Time
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         // STEP 2:
         // Constructor Injection
         // IConfiguration object is automatically provided by ASP.NET Core
-        public JwtService(IConfiguration configuration)
+        public JwtService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         // STEP 3:
         // This method creates JWT Token for logged-in user
-        public AuthenticationResponseDTO CreateJwtToken(ApplicationUser applicationUser)
+        public async Task<AuthenticationResponseDTO> CreateJwtToken(ApplicationUser applicationUser)
         {
             // STEP 4:
             // Set token expiration time
@@ -48,11 +51,18 @@ namespace SliceSync.Service.Services
             // STEP 5:
             // Claims are user details stored inside token
             // These details help identify the user
-            Claim[] claims = new Claim[]
+            var roles = await _userManager.GetRolesAsync(applicationUser);
+
+            var claims = new List<Claim>
             {
                 // Store unique User ID
                 new Claim(
                     JwtRegisteredClaimNames.Sub,
+                    applicationUser.Id.ToString()
+                ),
+
+                new Claim(
+                    ClaimTypes.NameIdentifier,
                     applicationUser.Id.ToString()
                 ),
 
@@ -80,6 +90,11 @@ namespace SliceSync.Service.Services
                     applicationUser.FullName
                 )
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             // STEP 6:
             // Create Secret Security Key
@@ -133,6 +148,7 @@ namespace SliceSync.Service.Services
             // Return token and user details to client
             return new AuthenticationResponseDTO()
             {
+                UserId = applicationUser.Id,
                 JwtToken = token,
                 Email = applicationUser.Email,
                 PersonName = applicationUser.FullName,

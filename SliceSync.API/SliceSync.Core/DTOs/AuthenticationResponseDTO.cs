@@ -9,14 +9,15 @@ namespace SliceSync.Core.DTOs
 {
     public class AuthenticationResponseDTO
     {
+        public Guid UserId { get; set; }
         public string? PersonName { get; set; } = string.Empty;
-        public string? Email { get; set; } = string.Empty ;
+        public string? Email { get; set; } = string.Empty;
 
         public string? JwtToken { get; set; } = string.Empty;
 
         public DateTime? JwtTokenExpiration { get; set; }
 
-        public string? JwtRefreshToken { get; set;} = string.Empty;
+        public string? JwtRefreshToken { get; set; } = string.Empty;
 
         public DateTime? JwtRefreshTokenExpirationDateTime { get; set; }
     }

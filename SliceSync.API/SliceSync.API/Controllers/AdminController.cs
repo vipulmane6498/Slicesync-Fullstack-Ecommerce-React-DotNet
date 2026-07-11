@@ -23,7 +23,7 @@ namespace SliceSync.API.Controllers
         }
 
         [HttpPost("addcategory")]
-        public async Task<IActionResult> AddCategory(CategoryRequestDTO categoryRequestDTO)
+        public async Task<IActionResult> AddCategory([FromBody] CategoryRequestDTO categoryRequestDTO)
         {
             var categories = await _categoryService.AddCategory(categoryRequestDTO);
 
@@ -33,7 +33,7 @@ namespace SliceSync.API.Controllers
 
         
         [HttpPut("editcategory")]
-        public async Task<IActionResult> EditCategory(CategoryRequestDTO categoryRequestDTO)
+        public async Task<IActionResult> EditCategory([FromBody] CategoryRequestDTO categoryRequestDTO)
         {
            var updatedCategory= await _categoryService.UpdateCategory(categoryRequestDTO);
 
@@ -41,7 +41,7 @@ namespace SliceSync.API.Controllers
         }
 
         [HttpDelete("removecategorybyid")]
-        public async Task<IActionResult> RemoveCategoryById(Guid id)
+        public async Task<IActionResult> RemoveCategoryById([FromQuery] Guid id)
         {
           var deletedCategory= await _categoryService.DeleteCategoryById(id);
 
@@ -64,7 +64,7 @@ namespace SliceSync.API.Controllers
 
 
         [HttpGet("getcategorybyid")]
-        public async Task<IActionResult> GetCategoryById(Guid id)
+        public async Task<IActionResult> GetCategoryById([FromQuery] Guid id)
         {
           var category= await _categoryService.GetCategoryById(id);
 
@@ -95,7 +95,7 @@ namespace SliceSync.API.Controllers
         //---------------Pizza----------------------------
 
         [HttpPost("addpizza")]
-        public async Task<IActionResult> AddPizza(PizzaRequestDTO pizza)
+        public async Task<IActionResult> AddPizza([FromBody] PizzaRequestDTO pizza)
         {
             if (pizza == null)
             {
@@ -110,18 +110,13 @@ namespace SliceSync.API.Controllers
         [HttpGet("getpizzabyid")]
         public async Task<IActionResult> GetPizzaById([FromQuery]Guid id)
         {
-            if(id == null)
-            {
-                return BadRequest("Please provide id !!");
-            }
-
             var pizza = await _pizzaService.GetPizzaById(id);
 
             return Ok(pizza);
         }
 
         [HttpDelete("deletepizzabyid")]
-        public async Task<IActionResult> RemovePizzaById(Guid id)
+        public async Task<IActionResult> RemovePizzaById([FromQuery] Guid id)
         {
            bool deletedPizza= await _pizzaService.DetelePizzaById(id);
 

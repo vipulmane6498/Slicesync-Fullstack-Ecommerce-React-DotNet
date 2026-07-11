@@ -215,16 +215,37 @@ namespace SliceSync.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EstimatedDelivery")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("OrderStatus")
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Priority")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("PriorityPrice")
+                        .HasColumnType("decimal(10,2)");
+
                     b.Property<decimal?>("TotalOrderPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("OrderId");
@@ -285,7 +306,7 @@ namespace SliceSync.Infrastructure.Migrations
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("OrderStatusHistoryId");
@@ -534,9 +555,7 @@ namespace SliceSync.Infrastructure.Migrations
                 {
                     b.HasOne("SliceSync.Core.IdentityEntities.ApplicationUser", "ApplicationUser")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("ApplicationUser");
                 });
@@ -571,8 +590,7 @@ namespace SliceSync.Infrastructure.Migrations
                     b.HasOne("SliceSync.Core.IdentityEntities.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("ApplicationUser");
 

@@ -32,7 +32,7 @@ namespace SliceSync.API.Controllers
 
 
         [HttpPost("register")]
-        public async Task<IActionResult> Registeration(RegisterDTO registerDTO)
+        public async Task<IActionResult> Registeration([FromBody] RegisterDTO registerDTO)
         {
 
             if (ModelState.IsValid == false)
@@ -139,7 +139,7 @@ namespace SliceSync.API.Controllers
 
 
                 //call JWT method and store the token with user details in variable and return to client
-                var authenticationResponse = _jwtService.CreateJwtToken(user);
+                var authenticationResponse = await _jwtService.CreateJwtToken(user);
 
                 // Store the newly generated refresh token on the user record
                 user.JwtRefreshToken = authenticationResponse.JwtRefreshToken;
@@ -164,8 +164,8 @@ namespace SliceSync.API.Controllers
         }
 
 
-        [HttpGet("login")]
-        public async Task<IActionResult> Login(LoginDTO loginDTO)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             if (ModelState.IsValid == false)
             {
@@ -184,7 +184,7 @@ namespace SliceSync.API.Controllers
 
                 if (user == null)
                 {
-                    Problem("Please add creds !!");
+                    return Problem("Please add creds !!");
                 }
 
                 //if (user != null)
@@ -207,7 +207,7 @@ namespace SliceSync.API.Controllers
 
 
                 //call JWT method and store the token with user details in variable and return to client
-                var authenticationResponse = _jwtService.CreateJwtToken(user);
+                var authenticationResponse = await _jwtService.CreateJwtToken(user);
 
                 // Store the newly generated refresh token on the user record table
                 user.JwtRefreshToken = authenticationResponse.JwtRefreshToken;
@@ -260,7 +260,7 @@ namespace SliceSync.API.Controllers
         //after every expiration of token, Client will send seperate API request for generate new jwt token 
 
         [HttpPost("generate-new-jwt-token")]
-        public async Task<IActionResult> GenerateNewJwtAccessToken(TokenDTO tokenDTO)
+        public async Task<IActionResult> GenerateNewJwtAccessToken([FromBody] TokenDTO tokenDTO)
         {
             // STEP 1:
             // Check if request data is null
@@ -308,7 +308,7 @@ namespace SliceSync.API.Controllers
             // STEP 7:
             // Generate new JWT token and refresh token
             var authenticationResponse =
-                _jwtService.CreateJwtToken(user);
+                await _jwtService.CreateJwtToken(user);
 
             // STEP 8:
             // Store new refresh token in database
@@ -317,6 +317,8 @@ namespace SliceSync.API.Controllers
 
             user.JwtRefreshTokenExpirationDateTime =
                 authenticationResponse.JwtRefreshTokenExpirationDateTime;
+
+            await _userManager.UpdateAsync(user);
 
             // STEP 9:
             // Return newly generated tokens

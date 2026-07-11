@@ -35,21 +35,21 @@ namespace SliceSync.API.Controllers
         }
 
         [HttpPost("addtocart")]
-        public async Task<ActionResult<AddToCartResponseDTO>> AddToCart(AddToCartRequestDTO requestDTO)
+        public async Task<ActionResult<AddToCartResponseDTO>> AddToCart([FromBody] AddToCartRequestDTO requestDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await _cartService.AddToCart(requestDTO));
         }
 
         [HttpPost("removefromcart")]
-        public async Task<ActionResult<AddToCartResponseDTO>> RemoveFromCart(AddToCartRequestDTO requestDTO)
+        public async Task<ActionResult<AddToCartResponseDTO>> RemoveFromCart([FromBody] AddToCartRequestDTO requestDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Ok(await _cartService.RemoveFromCart(requestDTO));
         }
 
         [HttpPost("checkout")]
-        public async Task<ActionResult<OrderResponseDTO>> CheckOut(OrderRequestDTO orderRequestDTO)
+        public async Task<ActionResult<OrderResponseDTO>> CheckOut([FromBody] OrderRequestDTO orderRequestDTO)
         {
             var OrderPlaced = await _cartService.CheckOut(orderRequestDTO);
 
@@ -59,7 +59,7 @@ namespace SliceSync.API.Controllers
 
         //cancel order => Happens before the order is shipped/delivered
         [HttpPatch("cancelorder")]
-        public async Task<ActionResult<OrderStatusUpdateResponseDTO>> CancelOrder(OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
+        public async Task<ActionResult<OrderStatusUpdateResponseDTO>> CancelOrder([FromBody] OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
         {
             if (orderStatusUpdateRequestDTO == null)
             {
@@ -72,7 +72,7 @@ namespace SliceSync.API.Controllers
 
         //Return order => Happens after the order is delivered
         [HttpPatch("returnorder")]
-        public async Task<ActionResult<OrderStatusUpdateResponseDTO>> ReturnOrder(OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
+        public async Task<ActionResult<OrderStatusUpdateResponseDTO>> ReturnOrder([FromBody] OrderStatusUpdateRequestDTO orderStatusUpdateRequestDTO)
         {
             if (orderStatusUpdateRequestDTO == null)
             {

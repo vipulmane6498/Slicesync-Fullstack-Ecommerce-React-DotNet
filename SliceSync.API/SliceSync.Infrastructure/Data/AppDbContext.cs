@@ -90,7 +90,8 @@ namespace SliceSync.Infrastructure.Data
             modelbuilder.Entity<Order>()
                 .HasOne(o => o.ApplicationUser)
                 .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.UserId);
+                .HasForeignKey(o => o.UserId)
+                .IsRequired(false);
 
             //5. OrderStatusHistory----------
             //OrderStatusHistory -> order
@@ -105,6 +106,7 @@ namespace SliceSync.Infrastructure.Data
                 .HasOne(osh => osh.ApplicationUser)
                 .WithMany()
                 .HasForeignKey(osh => osh.UserId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.NoAction);
 
 

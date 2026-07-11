@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceSync.Core", "SliceSync
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SliceSync.Service", "SliceSync.Service\SliceSync.Service.csproj", "{AAFA47D2-9487-4FD9-9249-793467F2F46A}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SliceSync.Schemas.SQL", "SliceSync.Schemas.SQL\SliceSync.Schemas.SQL.sqlproj", "{952CF2C2-BD9F-4883-9D56-67E677CC22B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AAFA47D2-9487-4FD9-9249-793467F2F46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAFA47D2-9487-4FD9-9249-793467F2F46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAFA47D2-9487-4FD9-9249-793467F2F46A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952CF2C2-BD9F-4883-9D56-67E677CC22B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952CF2C2-BD9F-4883-9D56-67E677CC22B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952CF2C2-BD9F-4883-9D56-67E677CC22B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952CF2C2-BD9F-4883-9D56-67E677CC22B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

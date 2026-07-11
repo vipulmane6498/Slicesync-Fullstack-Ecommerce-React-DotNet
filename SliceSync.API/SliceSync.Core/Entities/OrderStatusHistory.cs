@@ -22,7 +22,7 @@ namespace SliceSync.Core.Entities
 
 
         [ForeignKey("ApplicationUser")]
-        public Guid UserId {  get; set; }
+        public Guid? UserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
 
         [Column(TypeName ="nvarchar(20)")]
