@@ -335,20 +335,4 @@ SliceSync demonstrates end-to-end full-stack engineering with clean backend laye
 
 ---
 
-## Copy-Ready Resume Bullets
-
-- Engineered a full-stack pizza ordering platform using ASP.NET Core Web API, React, Redux Toolkit, and SQL Server, implementing complete user journeys from authentication to order tracking.
-- Applied clean architecture principles by separating API, domain contracts, business services, and infrastructure, improving maintainability and enabling faster feature iteration.
-- Designed and integrated secure JWT authentication with role-based access control and user-owned order flows, preventing unauthorized access and data leakage.
-- Built contract-driven frontend/backend integration using dedicated DTOs and camelCase API responses, eliminating payload mismatches and stabilizing end-to-end behavior.
-- Modeled and implemented relational data structures for pizzas, carts, orders, and status history with EF Core migrations and SQL schema artifacts.
-
-## Interview Talking Points
-
-- Why clean architecture was selected and how dependency direction was kept from API to contracts/services to infrastructure.
-- How contract mismatches were identified and fixed between React and .NET APIs.
-- Tradeoffs in cart persistence strategy: responsive local state plus server sync for authenticated users.
-- How JWT claim design enabled secure user-specific order ownership and history retrieval.
-- How the schema supports extensibility for payments, notifications, and operational analytics.
-
 
