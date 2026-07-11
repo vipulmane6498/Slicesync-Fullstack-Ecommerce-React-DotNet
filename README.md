@@ -7,7 +7,7 @@ This project is designed to be portfolio and resume ready: it shows full ownersh
 
 ---
 
-## Why This Project Is Hiring-Relevant
+## Key Implementations
 
 - Built and integrated a full-stack commerce workflow: authentication, menu browsing, cart operations, order placement, order tracking, and order history.
 - Applied clean architecture layering in the backend to keep domain, service contracts, and infrastructure concerns separated.
