@@ -3,7 +3,7 @@
 SliceSync is a full-stack pizza ordering platform built with ASP.NET Core Web API and React.
 It demonstrates production-oriented backend architecture, secure authentication, contract-driven API integration, and a polished frontend ordering experience.
 
-This project is designed to be portfolio and resume ready: it shows full ownership of backend, frontend, database design, and integration decisions.
+This project shows full ownership of backend, frontend, database design, and integration decisions.
 
 ---
 
